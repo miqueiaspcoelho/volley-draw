@@ -1,0 +1,20 @@
+[project]
+name = "volley-draw"
+version = "0.1.0"
+description = "Aplicacao web para sorteio de times de volei."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.116,<1.0",
+    "jinja2>=3.1,<4.0",
+    "uvicorn[standard]>=0.35,<1.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "httpx>=0.28,<1.0",
+    "pytest>=8.0,<9.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
