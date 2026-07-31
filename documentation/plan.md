@@ -1,6 +1,15 @@
 # Volley Draw - Plano Inicial
 
+## Acompanhamento
+
+- Etapa 1 - Preparacao do Projeto: concluida em 2026-07-31.
+- Etapa 2 - Banco e Migracoes: proxima etapa, pendente de autorizacao explicita.
+- Etapas 3 a 12: pendentes.
+
+
 ## Etapa 1 - Preparacao do Projeto
+
+Status: concluida em 2026-07-31.
 
 - Objetivo: criar estrutura minima da aplicacao sem funcionalidades.
 - Modulos esperados: configuracao FastAPI, estrutura `app/`, templates base, testes base.
@@ -107,3 +116,4 @@
 - Conclusao: checklist de deploy validado.
 - Dependencias: etapas 1 a 11.
 - Riscos: requisitos de hospedagem ainda nao definidos.
+
