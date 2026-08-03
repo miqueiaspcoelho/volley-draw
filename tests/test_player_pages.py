@@ -119,3 +119,18 @@ def test_players_page_edits_and_deactivates_player(client: TestClient) -> None:
 
     inactive = client.post("/jogadores/1/ativo", data={"active": "false"}, follow_redirects=True)
     assert "Inativo" in inactive.text
+
+
+def test_players_page_imports_csv_file(client: TestClient) -> None:
+    csv_content = "name,serving,passing,setting,attacking,blocking\nAlexandre,5,5,5,5,3,\nAlice conv Higor ,1,1,1,1,1,\n"
+
+    response = client.post(
+        "/jogadores/importar-csv",
+        files={"csv_file": ("jogadores.csv", csv_content, "text/csv")},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert "2 jogador(es) importado(s)." in response.text
+    assert "Alexandre" in response.text
+    assert "Alice conv Higor" in response.text

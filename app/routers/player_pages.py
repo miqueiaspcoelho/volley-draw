@@ -1,5 +1,5 @@
-﻿from decimal import Decimal, InvalidOperation
-from urllib.parse import parse_qs
+from decimal import Decimal, InvalidOperation
+from urllib.parse import parse_qs, quote
 
 from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -12,9 +12,11 @@ from app.db.session import get_db
 from app.schemas.player import PlayerCreate, PlayerUpdate
 from app.services.players import (
     DuplicatePlayerNameError,
+    PlayerCsvImportError,
     PlayerNotFoundError,
     create_player,
     get_player,
+    import_players_from_csv,
     list_players,
     set_player_active,
     update_player,
@@ -28,7 +30,8 @@ SKILL_FIELDS = ("serving", "passing", "setting", "attacking", "blocking")
 
 @router.get("", response_class=HTMLResponse)
 def players_page(request: Request, db: Session = Depends(get_db)) -> HTMLResponse:
-    return _render_page(request, db)
+    success = request.query_params.get("success")
+    return _render_page(request, db, success=success)
 
 
 @router.post("", response_class=HTMLResponse)
@@ -40,6 +43,16 @@ async def create_player_page(request: Request, db: Session = Depends(get_db)) ->
     except (ValidationError, DuplicatePlayerNameError, ValueError) as exc:
         return _render_page(request, db, values=values, error=_error_message(exc), status_code=400)
     return _redirect_players()
+
+
+@router.post("/importar-csv", response_class=HTMLResponse)
+async def import_players_csv_page(request: Request, db: Session = Depends(get_db)) -> HTMLResponse:
+    try:
+        content = await _csv_upload_content(request)
+        imported = import_players_from_csv(db, content)
+    except (PlayerCsvImportError, DuplicatePlayerNameError, UnicodeDecodeError, ValueError) as exc:
+        return _render_page(request, db, error=_csv_error_message(exc), status_code=400)
+    return _redirect_players(f"{imported} jogador(es) importado(s).")
 
 
 @router.get("/{player_id}/editar", response_class=HTMLResponse)
@@ -86,6 +99,7 @@ def _render_page(
     values: dict | None = None,
     editing: object | None = None,
     error: str | None = None,
+    success: str | None = None,
     status_code: int = 200,
 ) -> HTMLResponse:
     return templates.TemplateResponse(
@@ -97,13 +111,17 @@ def _render_page(
             "values": values or {},
             "editing": editing,
             "error": error,
+            "success": success,
         },
         status_code=status_code,
     )
 
 
-def _redirect_players() -> RedirectResponse:
-    return RedirectResponse("/jogadores", status_code=status.HTTP_303_SEE_OTHER)
+def _redirect_players(success: str | None = None) -> RedirectResponse:
+    url = "/jogadores"
+    if success:
+        url = f"{url}?success={quote(success)}"
+    return RedirectResponse(url, status_code=status.HTTP_303_SEE_OTHER)
 
 
 async def _form_values(request: Request) -> dict:
@@ -124,6 +142,24 @@ async def _urlencoded_form(request: Request) -> dict[str, str]:
     return {key: values[-1] for key, values in parsed.items()}
 
 
+async def _csv_upload_content(request: Request) -> str:
+    content_type = request.headers.get("content-type", "")
+    marker = "boundary="
+    if marker not in content_type:
+        raise PlayerCsvImportError("csv file is required")
+
+    boundary = content_type.split(marker, 1)[1].split(";", 1)[0].strip().strip('"')
+    body = await request.body()
+    for part in body.split(("--" + boundary).encode()):
+        if b'name="csv_file"' not in part:
+            continue
+        _, separator, data = part.partition(b"\r\n\r\n")
+        if not separator:
+            break
+        return data.rstrip(b"\r\n-").decode("utf-8-sig")
+    raise PlayerCsvImportError("csv file is required")
+
+
 def _decimal_or_raw(value: object) -> Decimal | object:
     try:
         return Decimal(str(value))
@@ -135,4 +171,10 @@ def _error_message(exc: Exception) -> str:
     if isinstance(exc, DuplicatePlayerNameError):
         return "Ja existe jogador com esse nome."
     return "Confira os campos informados. Notas devem ir de 0 a 5 com uma casa decimal."
+
+
+def _csv_error_message(exc: Exception) -> str:
+    if isinstance(exc, DuplicatePlayerNameError):
+        return "CSV contem jogador ja cadastrado."
+    return "Confira o CSV. Use as colunas name, serving, passing, setting, attacking e blocking."
 

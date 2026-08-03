@@ -15,6 +15,7 @@ from app.schemas.player import PlayerCreate, PlayerUpdate
 from app.services.players import (
     DuplicatePlayerNameError,
     create_player,
+    import_players_from_csv,
     list_players,
     set_player_active,
     update_player,
@@ -137,3 +138,23 @@ def test_active_route_deactivates_player(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert response.json()["active"] is False
+
+
+def test_import_players_from_csv_persists_players(db_session: Session) -> None:
+    csv_content = "name,serving,passing,setting,attacking,blocking\nAlexandre,5,5,5,5,3,\nAlice conv Higor ,1,1,1,1,1,\n"
+
+    imported = import_players_from_csv(db_session, csv_content)
+
+    players = list_players(db_session)
+    assert imported == 2
+    assert [player.name for player in players] == ["Alexandre", "Alice conv Higor"]
+    assert players[0].overall == Decimal("4.6")
+
+
+def test_import_players_from_csv_rejects_existing_name(db_session: Session) -> None:
+    create_player(db_session, player_data("Alexandre"))
+    csv_content = "name,serving,passing,setting,attacking,blocking\nAlexandre,5,5,5,5,3,\n"
+
+    with pytest.raises(DuplicatePlayerNameError):
+        import_players_from_csv(db_session, csv_content)
+

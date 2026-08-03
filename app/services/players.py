@@ -1,4 +1,6 @@
+import csv
 from decimal import Decimal
+from io import StringIO
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -13,6 +15,13 @@ class PlayerNotFoundError(ValueError):
 
 class DuplicatePlayerNameError(ValueError):
     pass
+
+
+class PlayerCsvImportError(ValueError):
+    pass
+
+
+CSV_FIELDS = ("name", "serving", "passing", "setting", "attacking", "blocking")
 
 
 def list_players(db: Session, active_only: bool = False) -> list[Player]:
@@ -36,6 +45,21 @@ def create_player(db: Session, data: PlayerCreate) -> Player:
     db.commit()
     db.refresh(player)
     return player
+
+
+def import_players_from_csv(db: Session, content: str) -> int:
+    rows = _player_rows_from_csv(content)
+    names = [row.name for row in rows]
+    if len(names) != len(set(names)):
+        raise PlayerCsvImportError("csv contains duplicate player names")
+
+    existing = set(db.scalars(select(Player.name).where(Player.name.in_(names))))
+    if existing:
+        raise DuplicatePlayerNameError("player name already exists")
+
+    db.add_all(Player(**row.model_dump()) for row in rows)
+    db.commit()
+    return len(rows)
 
 
 def update_player(db: Session, player_id: int, data: PlayerUpdate) -> Player:
@@ -79,3 +103,34 @@ def _ensure_unique_name(
         statement = statement.where(Player.id != ignore_player_id)
     if db.scalar(statement) is not None:
         raise DuplicatePlayerNameError("player name already exists")
+
+
+def _player_rows_from_csv(content: str) -> list[PlayerCreate]:
+    reader = csv.DictReader(StringIO(content))
+    if reader.fieldnames is None:
+        raise PlayerCsvImportError("csv is empty")
+
+    missing = [field for field in CSV_FIELDS if field not in reader.fieldnames]
+    if missing:
+        raise PlayerCsvImportError("csv missing required columns")
+
+    rows: list[PlayerCreate] = []
+    for line_number, row in enumerate(reader, start=2):
+        try:
+            rows.append(
+                PlayerCreate(
+                    name=row.get("name"),
+                    serving=Decimal(str(row.get("serving"))),
+                    passing=Decimal(str(row.get("passing"))),
+                    setting=Decimal(str(row.get("setting"))),
+                    attacking=Decimal(str(row.get("attacking"))),
+                    blocking=Decimal(str(row.get("blocking"))),
+                    active=True,
+                )
+            )
+        except Exception as exc:
+            raise PlayerCsvImportError(f"invalid csv row {line_number}") from exc
+
+    if not rows:
+        raise PlayerCsvImportError("csv has no players")
+    return rows
