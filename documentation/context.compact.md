@@ -1,4 +1,4 @@
-﻿# Volley Draw - Contexto Compacto
+# Volley Draw - Contexto Compacto
 
 ## Proposito
 
@@ -41,17 +41,17 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Restricoes
 
-- Nao implementar Etapa 13 ou posteriores sem autorizacao explicita.
+- Nao implementar etapas futuras sem autorizacao explicita.
 - Sem alterar a API externa.
 - Sem commits sem ordem expressa.
 
 ## Etapa Atual
 
-Etapa 12 de Docker concluida com Dockerfile, docker-compose app+PostgreSQL, migration no startup e README com comandos locais.
+Etapa 13 de Preparacao para Deploy concluida com configuracao Neon, Alembic priorizando DATABASE_DIRECT_URL, checklist e migracoes aplicadas em producao.
 
 ## Proximo Passo
 
-Autorizar explicitamente a Etapa 13 - Preparacao para Deploy, se o ambiente Docker estiver aprovado.
+Revisar ambiente de hospedagem antes de qualquer deploy. Render nao foi acionado.
 
 
 

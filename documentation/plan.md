@@ -1,4 +1,4 @@
-﻿# Volley Draw - Plano Inicial
+# Volley Draw - Plano Inicial
 
 ## Acompanhamento
 
@@ -14,7 +14,7 @@
 - Etapa 10 - Autenticacao com Usuarios e PIN: concluida em 2026-08-03.
 - Etapa 11 - Testes: concluida em 2026-08-03.
 - Etapa 12 - Docker: concluida em 2026-08-03.
-- Etapa 13 - Preparacao para Deploy: pendente.
+- Etapa 13 - Preparacao para Deploy: concluida em 2026-08-03.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -150,6 +150,8 @@ Status: concluida em 2026-08-03.
 - Riscos: antecipar configuracao de deploy.
 
 ## Etapa 13 - Preparacao para Deploy
+
+Status: concluida em 2026-08-03.
 
 - Objetivo: deixar aplicacao pronta para publicacao controlada.
 - Modulos esperados: configuracao de producao, checklist e documentacao.

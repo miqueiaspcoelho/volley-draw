@@ -1,4 +1,4 @@
-﻿# Volley Draw
+# Volley Draw
 
 ## Docker local
 
@@ -25,3 +25,18 @@ Parar:
 ```powershell
 docker compose down
 ```
+
+
+## Producao
+
+Checklist validado para Neon:
+
+- Usar DATABASE_URL na aplicacao.
+- Usar DATABASE_DIRECT_URL para Alembic quando disponivel; DATABASE_URL fica como fallback.
+- URLs postgresql:// sao normalizadas para postgresql+psycopg://.
+- Manter .env e .env.neon fora do versionamento.
+- Configurar VOLLEY_DRAW_SESSION_SECRET forte em producao.
+- Configurar VOLLEY_DRAW_SESSION_COOKIE_SECURE=true somente com HTTPS.
+- Criar usuario inicial com python -m app.cli.users create ... no ambiente de producao.
+- Executar alembic upgrade head antes de iniciar a aplicacao.
+- Nao importar dados locais no banco de producao.

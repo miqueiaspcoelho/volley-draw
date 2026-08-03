@@ -1,13 +1,24 @@
-﻿from dataclasses import dataclass
+from dataclasses import dataclass
 from functools import lru_cache
 import os
+
+
+POSTGRESQL_PSYCOPG_SCHEME = "postgresql+psycopg://"
+POSTGRESQL_DEFAULT_SCHEME = "postgresql://"
+DEFAULT_DATABASE_URL = "postgresql+psycopg://postgres:postgres@localhost:5432/volley_draw"
+
+
+def normalize_database_url(url: str) -> str:
+    if url.startswith(POSTGRESQL_DEFAULT_SCHEME):
+        return url.replace(POSTGRESQL_DEFAULT_SCHEME, POSTGRESQL_PSYCOPG_SCHEME, 1)
+    return url
 
 
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "Volley Draw"
     debug: bool = False
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/volley_draw"
+    database_url: str = DEFAULT_DATABASE_URL
     draw_api_base_url: str = "https://apiteams-q4s3.onrender.com"
     draw_api_timeout: float = 20.0
     draw_api_verify_tls: bool = True
@@ -20,10 +31,7 @@ def get_settings() -> Settings:
     return Settings(
         app_name=os.getenv("VOLLEY_DRAW_APP_NAME", "Volley Draw"),
         debug=os.getenv("VOLLEY_DRAW_DEBUG", "false").lower() == "true",
-        database_url=os.getenv(
-            "DATABASE_URL",
-            "postgresql+psycopg://postgres:postgres@localhost:5432/volley_draw",
-        ),
+        database_url=normalize_database_url(os.getenv("DATABASE_URL", DEFAULT_DATABASE_URL)),
         draw_api_base_url=os.getenv(
             "VOLLEY_DRAW_API_BASE_URL",
             "https://apiteams-q4s3.onrender.com",
