@@ -1,0 +1,13 @@
+﻿.git
+.venv
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.egg-info
+.env
+.env.*
+Dockerfile
+README.md
+prompt_inicial.md

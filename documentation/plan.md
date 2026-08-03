@@ -1,10 +1,20 @@
-# Volley Draw - Plano Inicial
+﻿# Volley Draw - Plano Inicial
 
 ## Acompanhamento
 
 - Etapa 1 - Preparacao do Projeto: concluida em 2026-07-31.
-- Etapa 2 - Banco e Migracoes: proxima etapa, pendente de autorizacao explicita.
-- Etapas 3 a 12: pendentes.
+- Etapa 2 - Banco e Migracoes: concluida em 2026-08-03.
+- Etapa 3 - Cadastro de Jogadores: concluida em 2026-08-03.
+- Etapa 4 - Interface dos Jogadores: concluida em 2026-08-03.
+- Etapa 5 - Partidas e Presencas: concluida em 2026-08-03.
+- Etapa 6 - Integracao com API: concluida em 2026-08-03.
+- Etapa 7 - Persistencia e Exibicao do Sorteio: concluida em 2026-08-03.
+- Etapa 8 - Compartilhamento: concluida em 2026-08-03.
+- Etapa 9 - Historico: concluida em 2026-08-03.
+- Etapa 10 - Autenticacao com Usuarios e PIN: concluida em 2026-08-03.
+- Etapa 11 - Testes: concluida em 2026-08-03.
+- Etapa 12 - Docker: concluida em 2026-08-03.
+- Etapa 13 - Preparacao para Deploy: pendente.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -20,6 +30,8 @@ Status: concluida em 2026-07-31.
 
 ## Etapa 2 - Banco e Migracoes
 
+Status: concluida em 2026-08-03.
+
 - Objetivo: configurar PostgreSQL, SQLAlchemy e Alembic.
 - Modulos esperados: conexao, base declarativa, migracoes iniciais.
 - Tarefas: configurar engine/sessao, criar modelos iniciais aprovados, gerar migracao.
@@ -28,6 +40,8 @@ Status: concluida em 2026-07-31.
 - Riscos: definir campos definitivos antes da validacao do fluxo.
 
 ## Etapa 3 - Cadastro de Jogadores
+
+Status: concluida em 2026-08-03.
 
 - Objetivo: implementar regras de jogador no backend.
 - Modulos esperados: modelo, schemas/formularios, rotas, servicos simples.
@@ -38,6 +52,8 @@ Status: concluida em 2026-07-31.
 
 ## Etapa 4 - Interface dos Jogadores
 
+Status: concluida em 2026-08-03.
+
 - Objetivo: criar telas responsivas para manutencao de jogadores.
 - Modulos esperados: templates Jinja2 e fragmentos HTMX.
 - Tarefas: listar, cadastrar, editar, alternar ativo, exibir media.
@@ -46,6 +62,8 @@ Status: concluida em 2026-07-31.
 - Riscos: excesso de interacao antes de validar uso real.
 
 ## Etapa 5 - Partidas e Presencas
+
+Status: concluida em 2026-08-03.
 
 - Objetivo: permitir criar partida e selecionar presentes.
 - Modulos esperados: modelos de partida/presenca, rotas e templates.
@@ -56,6 +74,8 @@ Status: concluida em 2026-07-31.
 
 ## Etapa 6 - Integracao com API
 
+Status: concluida em 2026-08-03.
+
 - Objetivo: consumir a API publica de sorteio.
 - Modulos esperados: cliente HTTPX, servico de payload, tratamento de erros.
 - Tarefas: validar contrato da API, montar payload, chamar endpoint, tratar falhas.
@@ -64,6 +84,8 @@ Status: concluida em 2026-07-31.
 - Riscos: API indisponivel, contrato divergente, ausencia de identificador.
 
 ## Etapa 7 - Persistencia e Exibicao do Sorteio
+
+Status: concluida em 2026-08-03.
 
 - Objetivo: salvar e mostrar o resultado do sorteio.
 - Modulos esperados: modelo de sorteio, templates de resultado.
@@ -74,6 +96,8 @@ Status: concluida em 2026-07-31.
 
 ## Etapa 8 - Compartilhamento
 
+Status: concluida em 2026-08-03.
+
 - Objetivo: gerar texto simples para WhatsApp.
 - Modulos esperados: funcao de formatacao e template.
 - Tarefas: formatar times, incluir nome/data da partida se definido, permitir copia.
@@ -83,6 +107,8 @@ Status: concluida em 2026-07-31.
 
 ## Etapa 9 - Historico
 
+Status: concluida em 2026-08-03.
+
 - Objetivo: consultar partidas e sorteios anteriores.
 - Modulos esperados: rotas e templates de historico/detalhe.
 - Tarefas: listar partidas, filtrar ordenacao basica, abrir detalhe do sorteio.
@@ -90,16 +116,31 @@ Status: concluida em 2026-07-31.
 - Dependencias: etapa 7.
 - Riscos: volume futuro exigir paginacao.
 
-## Etapa 10 - Testes
+## Etapa 10 - Autenticacao com Usuarios e PIN
+
+Status: concluida em 2026-08-03.
+
+- Objetivo: restringir acesso ao app com usuarios locais e PIN.
+- Modulos esperados: tabela users, hash de PIN, login/logout, sessao por cookie, protecao de rotas.
+- Tarefas: criar modelo e migracao de users, servico de autenticacao, tela de login, middleware/dependencia de sessao, seed ou CLI para primeiro usuario.
+- Conclusao: app exige login para acessar jogadores, partidas, sorteios e historico.
+- Dependencias: etapa 9.
+- Riscos: recuperacao de acesso depender de seed/CLI ou edicao administrativa; PIN fraco exige HTTPS e segredo de sessao forte em producao.
+
+## Etapa 11 - Testes
+
+Status: concluida em 2026-08-03.
 
 - Objetivo: consolidar cobertura essencial.
 - Modulos esperados: testes de regras, rotas e integracao mockada.
-- Tarefas: cobrir validacoes, media, presencas, payload, persistencia de sorteio.
+- Tarefas: cobrir validacoes, media, presencas, payload, persistencia de sorteio, historico e autenticacao.
 - Conclusao: suite automatizada passa localmente.
 - Dependencias: etapas anteriores.
 - Riscos: testar detalhes de UI com baixo retorno inicial.
 
-## Etapa 11 - Docker
+## Etapa 12 - Docker
+
+Status: concluida em 2026-08-03.
 
 - Objetivo: preparar ambiente local reproduzivel.
 - Modulos esperados: Dockerfile e docker-compose.
@@ -108,12 +149,14 @@ Status: concluida em 2026-07-31.
 - Dependencias: aplicacao funcional minima.
 - Riscos: antecipar configuracao de deploy.
 
-## Etapa 12 - Preparacao para Deploy
+## Etapa 13 - Preparacao para Deploy
 
 - Objetivo: deixar aplicacao pronta para publicacao controlada.
 - Modulos esperados: configuracao de producao, checklist e documentacao.
-- Tarefas: revisar variaveis, banco, migracoes, logs e dominio da API externa.
+- Tarefas: revisar variaveis, banco, migracoes, logs, dominio da API externa, HTTPS, segredo de sessao e usuario inicial.
 - Conclusao: checklist de deploy validado.
-- Dependencias: etapas 1 a 11.
+- Dependencias: etapas 1 a 12.
 - Riscos: requisitos de hospedagem ainda nao definidos.
+
+
 

@@ -1,0 +1,46 @@
+﻿<section class="overflow-hidden rounded border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-4 py-3">
+    <h2 class="text-base font-semibold">Lista</h2>
+  </div>
+  {% if players %}
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[760px] text-left text-sm">
+        <thead class="bg-slate-100 text-xs uppercase text-slate-600">
+          <tr>
+            <th class="px-3 py-2">Nome</th>
+            <th class="px-3 py-2">Notas</th>
+            <th class="px-3 py-2">Media</th>
+            <th class="px-3 py-2">Status</th>
+            <th class="px-3 py-2 text-right">Acoes</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {% for player in players %}
+            <tr class="{% if not player.active %}bg-slate-50 text-slate-500{% endif %}">
+              <td class="px-3 py-3">
+                <div class="font-medium">{{ player.name }}</div>
+                {% if player.nickname %}<div class="text-xs text-slate-500">{{ player.nickname }}</div>{% endif %}
+              </td>
+              <td class="px-3 py-3 text-xs">
+                S {{ player.serving }} | R {{ player.passing }} | L {{ player.setting }} | A {{ player.attacking }} | B {{ player.blocking }}
+              </td>
+              <td class="px-3 py-3 font-semibold">{{ "%.1f"|format(player.overall) }}</td>
+              <td class="px-3 py-3">{{ "Ativo" if player.active else "Inativo" }}</td>
+              <td class="px-3 py-3">
+                <div class="flex justify-end gap-2">
+                  <a class="inline-flex h-9 items-center rounded border border-slate-300 px-3 text-sm" href="/jogadores/{{ player.id }}/editar" hx-get="/jogadores/{{ player.id }}/editar" hx-target="body">Editar</a>
+                  <form method="post" action="/jogadores/{{ player.id }}/ativo" hx-post="/jogadores/{{ player.id }}/ativo" hx-target="body">
+                    <input type="hidden" name="active" value="{{ 'false' if player.active else 'true' }}">
+                    <button class="h-9 rounded border border-slate-300 px-3 text-sm" type="submit">{{ "Desativar" if player.active else "Ativar" }}</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="px-4 py-6 text-sm text-slate-600">Nenhum jogador cadastrado.</p>
+  {% endif %}
+</section>

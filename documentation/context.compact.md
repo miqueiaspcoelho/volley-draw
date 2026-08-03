@@ -1,4 +1,4 @@
-# Volley Draw - Contexto Compacto
+﻿# Volley Draw - Contexto Compacto
 
 ## Proposito
 
@@ -41,16 +41,20 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Restricoes
 
-- Sem codigo de producao nesta etapa.
-- Sem dependencias novas.
-- Sem Docker, migracoes ou tabelas nesta etapa.
+- Nao implementar Etapa 13 ou posteriores sem autorizacao explicita.
 - Sem alterar a API externa.
 - Sem commits sem ordem expressa.
 
 ## Etapa Atual
 
-Etapa 1 de preparacao do projeto implementada com estrutura minima FastAPI, template base e testes base.
+Etapa 12 de Docker concluida com Dockerfile, docker-compose app+PostgreSQL, migration no startup e README com comandos locais.
 
 ## Proximo Passo
 
-Autorizar explicitamente a Etapa 2 - Banco e Migracoes, se a base criada estiver aprovada.
+Autorizar explicitamente a Etapa 13 - Preparacao para Deploy, se o ambiente Docker estiver aprovado.
+
+
+
+
+
+

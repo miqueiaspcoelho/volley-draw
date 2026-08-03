@@ -1,0 +1,36 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+  <section class="space-y-4">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold">Historico</h1>
+        <p class="text-sm text-slate-600">Partidas e sorteios anteriores.</p>
+      </div>
+      <a class="inline-flex h-10 items-center justify-center rounded border border-slate-300 px-4 text-sm font-medium" href="/">Inicio</a>
+    </div>
+
+    {% if error %}
+      <div class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{{ error }}</div>
+    {% endif %}
+
+    <section class="rounded border border-slate-200 bg-white shadow-sm">
+      {% if matches %}
+        <div class="divide-y divide-slate-100">
+          {% for match in matches %}
+            {% set latest_draw = latest_draws.get(match.id) %}
+            <a class="flex items-center justify-between gap-3 px-4 py-3 hover:bg-slate-50" href="/historico/{{ match.id }}">
+              <div>
+                <div class="font-medium">Partida #{{ match.id }}</div>
+                <div class="text-sm text-slate-600">{{ match.scheduled_at.strftime('%d/%m/%Y %H:%M') }}{% if match.notes %} - {{ match.notes }}{% endif %}</div>
+              </div>
+              <span class="text-sm {{ 'text-emerald-700' if latest_draw else 'text-slate-500' }}">{{ 'Com sorteio' if latest_draw else 'Sem sorteio' }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="px-4 py-6 text-sm text-slate-600">Nenhuma partida cadastrada.</p>
+      {% endif %}
+    </section>
+  </section>
+{% endblock %}
