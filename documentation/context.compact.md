@@ -47,11 +47,11 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Etapa Atual
 
-Etapa 13 de Preparacao para Deploy concluida com configuracao Neon, Alembic priorizando DATABASE_DIRECT_URL, checklist e migracoes aplicadas em producao.
+Etapa 13 de Preparacao para Deploy concluida com Neon, Alembic priorizando DATABASE_DIRECT_URL, Dockerfile preparado para Render, health check com banco e documentacao de deploy.
 
 ## Proximo Passo
 
-Revisar ambiente de hospedagem antes de qualquer deploy. Render nao foi acionado.
+Configurar segredos no painel do Render e acionar deploy manualmente quando aprovado. Deploy efetivo nao foi executado.
 
 
 

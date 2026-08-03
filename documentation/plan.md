@@ -156,7 +156,7 @@ Status: concluida em 2026-08-03.
 - Objetivo: deixar aplicacao pronta para publicacao controlada.
 - Modulos esperados: configuracao de producao, checklist e documentacao.
 - Tarefas: revisar variaveis, banco, migracoes, logs, dominio da API externa, HTTPS, segredo de sessao e usuario inicial.
-- Conclusao: checklist de deploy validado.
+- Conclusao: checklist de deploy validado para Neon e Render Docker, sem executar deploy efetivo.
 - Dependencias: etapas 1 a 12.
 - Riscos: requisitos de hospedagem ainda nao definidos.
 

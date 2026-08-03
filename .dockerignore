@@ -1,4 +1,5 @@
-﻿.git
+.git
+.gitignore
 .venv
 .pytest_cache
 __pycache__
@@ -8,6 +9,12 @@ __pycache__
 *.egg-info
 .env
 .env.*
-Dockerfile
-README.md
-prompt_inicial.md
+*.db
+*.sqlite
+*.sqlite3
+*.log
+logs
+.tmp
+tmp
+prompt_*.md
+documentation/*.tmp

@@ -31,12 +31,16 @@ docker compose down
 
 Checklist validado para Neon:
 
-- Usar DATABASE_URL na aplicacao.
+- Deploy previsto no Render como Web Service Docker.
+- Comando do container: uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}.
+- Usar DATABASE_URL na aplicacao com Neon.
 - Usar DATABASE_DIRECT_URL para Alembic quando disponivel; DATABASE_URL fica como fallback.
 - URLs postgresql:// sao normalizadas para postgresql+psycopg://.
-- Manter .env e .env.neon fora do versionamento.
-- Configurar VOLLEY_DRAW_SESSION_SECRET forte em producao.
-- Configurar VOLLEY_DRAW_SESSION_COOKIE_SECURE=true somente com HTTPS.
+- Manter .env, .env.* e .env.neon fora do versionamento e da imagem.
+- Configurar SECRET_KEY forte em producao.
+- Configurar SESSION_COOKIE_SECURE=true somente com HTTPS.
 - Criar usuario inicial com python -m app.cli.users create ... no ambiente de producao.
-- Executar alembic upgrade head antes de iniciar a aplicacao.
+- Executar alembic upgrade head manualmente antes de publicar versoes com novas migracoes.
 - Nao importar dados locais no banco de producao.
+
+Detalhes: documentation/deploy.md e documentation/deploy-checklist.md.
