@@ -1,4 +1,4 @@
-﻿from collections.abc import Generator
+from collections.abc import Generator
 import json
 from datetime import datetime
 from decimal import Decimal
@@ -10,6 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.auth import require_auth
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import create_app
@@ -39,6 +40,7 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
         yield db_session
 
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[require_auth] = lambda: None
     yield TestClient(app)
 
 
