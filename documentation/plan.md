@@ -204,6 +204,7 @@ Status: concluida em 2026-08-04.
   - validar responsividade da tela em desktop e mobile.
 - Rollback: remover a secao de criterios avancados da interface e deixar o servico de payload ignorando `force_together` e `force_apart`, preservando o fluxo atual de sorteio.
 - Conclusao: tela de partida permite informar criterios avancados opcionais em blocos por time possivel; backend envia os grupos para a API externa e valida jogadores ausentes ou duplicados.
+- Correcao 2026-08-04: substituir multiselects nativos por checkboxes para permitir marcar varios jogadores por cliques simples, sem alterar nomes de campos, parser do formulario ou contrato da API.
 
 ## Etapa 15 - Melhorias Visuais: Navegacao Lateral Responsiva
 

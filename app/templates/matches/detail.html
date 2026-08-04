@@ -44,24 +44,30 @@
                   <div class="rounded border border-[#affbff] bg-white p-3">
                     <div class="mb-3 text-sm font-semibold">Time {{ team_number }}</div>
                     <div class="grid gap-3 sm:grid-cols-2">
-                      <label class="grid gap-1 text-sm font-medium">
-                        Manter juntos
-                        <select class="min-h-24 rounded border border-[#febf97] px-2 py-2 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="force_together_{{ team_number }}" multiple>
+                      <fieldset class="grid gap-2 text-sm font-medium">
+                        <legend>Manter juntos</legend>
+                        <div class="grid max-h-48 gap-1 overflow-y-auto rounded border border-[#febf97] bg-white p-2 font-normal focus-within:ring-2 focus-within:ring-[#fe6960]">
                           {% for player in present_players %}
-                            <option value="{{ player.name }}">{{ player.name }}</option>
+                            <label class="flex items-center gap-2 rounded px-2 py-1 hover:bg-[#fefac2]">
+                              <input class="h-4 w-4 accent-[#fe6960]" type="checkbox" name="force_together_{{ team_number }}" value="{{ player.name }}">
+                              <span>{{ player.name }}</span>
+                            </label>
                           {% endfor %}
-                        </select>
-                        <span class="text-xs font-normal text-slate-500">Selecione 2 ou mais jogadores.</span>
-                      </label>
-                      <label class="grid gap-1 text-sm font-medium">
-                        Separar
-                        <select class="min-h-24 rounded border border-[#febf97] px-2 py-2 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="force_apart_{{ team_number }}" multiple>
+                        </div>
+                        <span class="text-xs font-normal text-slate-500">Marque 2 ou mais jogadores.</span>
+                      </fieldset>
+                      <fieldset class="grid gap-2 text-sm font-medium">
+                        <legend>Separar</legend>
+                        <div class="grid max-h-48 gap-1 overflow-y-auto rounded border border-[#febf97] bg-white p-2 font-normal focus-within:ring-2 focus-within:ring-[#fe6960]">
                           {% for player in present_players %}
-                            <option value="{{ player.name }}">{{ player.name }}</option>
+                            <label class="flex items-center gap-2 rounded px-2 py-1 hover:bg-[#fefac2]">
+                              <input class="h-4 w-4 accent-[#fe6960]" type="checkbox" name="force_apart_{{ team_number }}" value="{{ player.name }}">
+                              <span>{{ player.name }}</span>
+                            </label>
                           {% endfor %}
-                        </select>
-                        <span class="text-xs font-normal text-slate-500">Selecione 2 ou mais jogadores.</span>
-                      </label>
+                        </div>
+                        <span class="text-xs font-normal text-slate-500">Marque 2 ou mais jogadores.</span>
+                      </fieldset>
                     </div>
                   </div>
                 {% endfor %}

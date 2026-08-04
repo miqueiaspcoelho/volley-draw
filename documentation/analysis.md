@@ -106,6 +106,12 @@ Impacto tecnico:
 - O contrato externo permanece o mesmo: `force_together` e `force_apart` continuam como arrays de arrays de nomes.
 - Chamadas sem criterios avancados continuam usando listas vazias.
 
+Correcao em 2026-08-04:
+
+- Problema observado: os multiselects nativos exigiam Ctrl/Shift para selecionar mais de um jogador em desktop; ao clicar em outro jogador, a selecao anterior podia ser perdida.
+- Impacto: `force_together` e `force_apart` chegavam incompletos ao backend quando o usuario selecionava por cliques simples.
+- Solucao adotada: substituir os multiselects por checkboxes com o mesmo `name`, preservando o formato urlencoded de multiplos valores e o contrato da API.
+
 ## Etapa 15 - Melhorias Visuais: Navegacao
 
 Arquivos envolvidos:

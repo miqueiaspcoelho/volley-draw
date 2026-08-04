@@ -315,7 +315,9 @@ def test_match_page_displays_advanced_criteria_blocks(client: TestClient, db_ses
 
     assert response.status_code == 200
     assert "Criterios avancados" in response.text
+    assert 'type="checkbox" name="force_together_1"' in response.text
     assert 'name="force_together_1"' in response.text
+    assert 'type="checkbox" name="force_apart_2"' in response.text
     assert 'name="force_apart_2"' in response.text
 
 def test_match_page_returns_502_when_draw_api_fails(client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch) -> None:
