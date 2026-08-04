@@ -19,6 +19,7 @@
 - Etapa 15 - Melhorias Visuais: Navegacao Lateral Responsiva: concluida em 2026-08-04.
 - Etapa 16 - Melhorias Visuais da Tela de Partida: concluida em 2026-08-04.
 - Etapa 17 - Melhorias Visuais da Tela de Jogadores: concluida em 2026-08-04.
+- Etapa 18 - Filtro de Presencas na Partida: concluida em 2026-08-04.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -249,6 +250,17 @@ Status: concluida em 2026-08-04.
 - Fora do escopo: backend, banco, regras de cadastro, validacoes, rotas, nomes de campos e novas dependencias.
 - Testes: executar testes de paginas de jogadores e suite automatizada existente.
 - Conclusao: tela de jogadores recebeu cabecalho com contador, importacao CSV refinada, formulario em card, badges de notas/media/status e acoes mais claras, sem alterar comportamento funcional.
+
+## Etapa 18 - Filtro de Presencas na Partida
+
+Status: concluida em 2026-08-04.
+
+- Objetivo: adicionar filtro local na lista de jogadores ativos da tela da partida para facilitar marcar presenca ou ausencia.
+- Arquivos a alterar: `app/templates/matches/detail.html`, teste de renderizacao e documentacao spec-driven.
+- Escopo: campo de busca, filtragem client-side e mensagem de nenhum resultado.
+- Fora do escopo: backend, banco, algoritmo de sorteio, API externa, novas rotas e novas dependencias.
+- Testes: executar testes de sorteio/partida e suite automatizada existente.
+- Conclusao: tela da partida ganhou filtro local por texto na lista de presencas, com mensagem de nenhum resultado e sem alterar formularios de presenca.
 
 
 

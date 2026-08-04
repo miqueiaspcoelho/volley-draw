@@ -175,3 +175,21 @@ Escopo:
 
 - Alteracao puramente visual em hierarquia, espacamento, cards, badges, botoes e estados.
 - Sem alteracao de rotas, actions, nomes de campos, validacoes, banco ou regras de negocio.
+
+## Etapa 18 - Filtro de Presencas na Partida
+
+Arquivos envolvidos:
+
+- `app/templates/matches/detail.html`: lista de jogadores ativos e script local.
+- `tests/test_draws.py`: cobertura de renderizacao do filtro na tela da partida.
+
+Fluxo:
+
+- O organizador digita no campo de busca da secao Presentes.
+- A lista renderizada de jogadores ativos e filtrada no navegador por texto.
+- Os formularios de presenca continuam enviando `player_id` e `present` para a mesma rota.
+
+Impacto tecnico:
+
+- Sem alteracao de backend, banco, API externa ou regras de sorteio.
+- Risco principal: ocultar linhas no frontend sem feedback quando nao houver resultado.

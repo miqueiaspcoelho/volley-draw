@@ -321,6 +321,18 @@ def test_match_page_displays_advanced_criteria_blocks(client: TestClient, db_ses
     assert 'name="force_apart_2"' in response.text
 
 
+def test_match_page_displays_attendance_filter(client: TestClient, db_session: Session) -> None:
+    match_id = seed_present_players(db_session, ["Miqueias", "David"])
+
+    response = client.get(f"/partidas/{match_id}")
+
+    assert response.status_code == 200
+    assert 'id="attendance-filter"' in response.text
+    assert "Buscar jogador" in response.text
+    assert "data-attendance-player" in response.text
+    assert "Nenhum jogador encontrado." in response.text
+
+
 def test_match_page_has_advanced_blocks_for_players_per_team_changes(client: TestClient, db_session: Session) -> None:
     match_id = seed_present_players(db_session, [f"Jogador {index}" for index in range(1, 25)])
 

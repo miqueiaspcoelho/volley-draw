@@ -47,7 +47,7 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Etapa Atual
 
-Etapa 17 - Melhorias Visuais da Tela de Jogadores concluida em 2026-08-04.
+Etapa 18 - Filtro de Presencas na Partida concluida em 2026-08-04.
 
 Implementado:
 
@@ -58,10 +58,12 @@ Implementado:
 - Implementado: cabecalho de partida com badges, card de sorteio refinado, criterios em chips selecionaveis, resultado mais escaneavel, WhatsApp e lista de presentes com estados visuais melhores.
 - Etapa 17 foi puramente visual em templates de jogadores, sem alterar rotas, actions, names, validacoes, banco ou regras.
 - Implementado: cabecalho com contador, importacao CSV refinada, formulario em card, badges de notas/media/status e acoes mais claras.
+- Implementado filtro local na lista de presencas da tela de partida, sem mudar rota/formularios de presenca.
+- Testes passaram: focados `tests/test_draws.py tests/test_matches.py` e suite completa.
 
 ## Proximo Passo
 
-Proxima melhoria visual logica: historico de partidas e sorteios.
+Validar manualmente no navegador o filtro de presencas com muitos jogadores cadastrados.
 
 
 

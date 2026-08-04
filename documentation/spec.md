@@ -44,6 +44,7 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - RF14: Exibir navegacao global por menu lateral responsivo, acionado por hamburger, com acesso as abas existentes.
 - RF15: Melhorar visualmente a tela de detalhe da partida sem alterar regras de negocio, rotas ou contratos.
 - RF16: Melhorar visualmente a tela de jogadores sem alterar regras de cadastro, edicao, importacao ou ativacao.
+- RF17: Permitir filtrar visualmente jogadores ativos na tela da partida para facilitar marcar presenca ou ausencia.
 
 ## Requisitos Nao Funcionais
 
@@ -83,6 +84,7 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - A quantidade de blocos dos criterios avancados deve acompanhar a quantidade de jogadores presentes dividida por `Por time`, arredondando para cima.
 - A tela de detalhe da partida deve ter hierarquia visual clara para sorteio, criterios, resultado, WhatsApp e presentes.
 - A tela de jogadores deve ter hierarquia visual clara para cadastro, importacao, listagem, media e status.
+- O filtro de presencas deve atuar apenas na lista exibida, preservando os formularios de marcar/desmarcar presenca.
 - O organizador consegue abrir o menu lateral, ver o fundo desfocado e navegar entre Inicio, Jogadores, Partidas e Historico.
 - Nenhuma funcionalidade fora do MVP e implementada sem nova autorizacao.
 
