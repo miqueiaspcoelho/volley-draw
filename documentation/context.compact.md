@@ -59,6 +59,7 @@ Implementado:
 - Etapa 17 foi puramente visual em templates de jogadores, sem alterar rotas, actions, names, validacoes, banco ou regras.
 - Implementado: cabecalho com contador, importacao CSV refinada, formulario em card, badges de notas/media/status e acoes mais claras.
 - Implementado filtro local por nome na lista de presencas da tela de partida, case insensitive e sem mudar rota/formularios de presenca.
+- Correcao: filtro usa apenas `player.name`, normaliza maiusculas/minusculas e acentos, e reinicializa apos `htmx:afterSwap`.
 - Testes passaram: focados `tests/test_draws.py tests/test_matches.py` e suite completa.
 
 ## Proximo Passo

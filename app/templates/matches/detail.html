@@ -145,13 +145,13 @@
         <div class="border-b border-[#d2fdfe] bg-white px-4 py-3">
           <label class="grid gap-1 text-sm font-medium text-slate-800">
             Buscar jogador
-            <input id="attendance-filter" class="h-10 rounded border border-[#febf97] bg-white px-3 font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fe6960]" type="search" placeholder="Digite nome ou apelido" autocomplete="off">
+            <input id="attendance-filter" class="h-10 rounded border border-[#febf97] bg-white px-3 font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fe6960]" type="search" placeholder="Digite o nome" autocomplete="off">
           </label>
         </div>
         <div class="divide-y divide-slate-100" data-attendance-list>
           {% for player in active_players %}
             {% set present = player.id in present_ids %}
-            <div class="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-[#d2fdfe]/30" data-attendance-player data-filter-text="{{ player.name|lower }}">
+            <div class="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-[#d2fdfe]/30" data-attendance-player data-filter-text="{{ player.name }}">
               <div class="min-w-0">
                 <div class="font-medium">{{ player.name }}</div>
                 <div class="mt-1 inline-flex rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">Media {{ "%.1f"|format(player.overall) }}</div>
@@ -201,32 +201,45 @@
     })();
 
     (() => {
-      const filterInput = document.getElementById("attendance-filter");
-      const players = Array.from(document.querySelectorAll("[data-attendance-player]"));
-      const emptyState = document.querySelector("[data-attendance-empty]");
-      if (!filterInput || players.length === 0 || !emptyState) {
-        return;
-      }
+      const normalize = (value) =>
+        value
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .trim();
 
-      const normalize = (value) => value.toLowerCase().trim();
-      const applyFilter = () => {
-        const query = normalize(filterInput.value);
-        let visibleCount = 0;
+      const initAttendanceFilter = () => {
+        const filterInput = document.getElementById("attendance-filter");
+        const players = Array.from(document.querySelectorAll("[data-attendance-player]"));
+        const emptyState = document.querySelector("[data-attendance-empty]");
+        if (!filterInput || players.length === 0 || !emptyState || filterInput.dataset.bound === "true") {
+          return;
+        }
 
-        players.forEach((player) => {
-          const visible = player.dataset.filterText.includes(query);
-          player.hidden = !visible;
-          if (visible) {
-            visibleCount += 1;
-          }
-        });
+        const applyFilter = () => {
+          const query = normalize(filterInput.value);
+          let visibleCount = 0;
 
-        emptyState.hidden = visibleCount > 0;
-        emptyState.classList.toggle("hidden", visibleCount > 0);
+          players.forEach((player) => {
+            const playerName = normalize(player.dataset.filterText || "");
+            const visible = playerName.includes(query);
+            player.classList.toggle("hidden", !visible);
+            if (visible) {
+              visibleCount += 1;
+            }
+          });
+
+          emptyState.classList.toggle("hidden", visibleCount > 0);
+        };
+
+        filterInput.dataset.bound = "true";
+        filterInput.addEventListener("input", applyFilter);
+        applyFilter();
       };
 
-      filterInput.addEventListener("input", applyFilter);
-      applyFilter();
+      initAttendanceFilter();
+      document.addEventListener("DOMContentLoaded", initAttendanceFilter);
+      document.body.addEventListener("htmx:afterSwap", initAttendanceFilter);
     })();
   </script>
 {% endblock %}
