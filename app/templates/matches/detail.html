@@ -33,7 +33,7 @@
             Range
             <input class="h-11 rounded border border-[#febf97] bg-white px-3 font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="range" type="number" min="0" value="2" required>
           </label>
-          <button class="h-11 self-end rounded bg-[#fe6960] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56] focus:outline-none focus:ring-2 focus:ring-[#febf97]" type="submit">Sortear</button>
+          <button class="h-11 w-full self-end rounded bg-[#fe6960] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56] focus:outline-none focus:ring-2 focus:ring-[#febf97] sm:w-auto" type="submit">Sortear</button>
         </div>
 
         <details class="overflow-hidden rounded border border-[#affbff] bg-[#d2fdfe]/30">
@@ -151,15 +151,15 @@
         <div class="divide-y divide-slate-100" data-attendance-list>
           {% for player in active_players %}
             {% set present = player.id in present_ids %}
-            <div class="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-[#d2fdfe]/30" data-attendance-player data-filter-text="{{ player.name }}">
+            <div class="flex flex-col gap-3 px-4 py-3 transition hover:bg-[#d2fdfe]/30 sm:flex-row sm:items-center sm:justify-between" data-attendance-player data-filter-text="{{ player.name }}">
               <div class="min-w-0">
                 <div class="font-medium">{{ player.name }}</div>
                 <div class="mt-1 inline-flex rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">Media {{ "%.1f"|format(player.overall) }}</div>
               </div>
-              <form method="post" action="/partidas/{{ match.id }}/presencas" hx-post="/partidas/{{ match.id }}/presencas" hx-target="body">
+              <form class="w-full sm:w-auto" method="post" action="/partidas/{{ match.id }}/presencas" hx-post="/partidas/{{ match.id }}/presencas" hx-target="body">
                 <input type="hidden" name="player_id" value="{{ player.id }}">
                 <input type="hidden" name="present" value="{{ 'false' if present else 'true' }}">
-                <button class="h-9 rounded {{ 'bg-[#fe6960] text-white shadow-sm' if present else 'border border-[#febf97] bg-white hover:bg-[#fefac2]' }} px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-[#febf97]" type="submit">{{ "Presente" if present else "Marcar" }}</button>
+                <button class="h-9 w-full rounded {{ 'bg-[#fe6960] text-white shadow-sm' if present else 'border border-[#febf97] bg-white hover:bg-[#fefac2]' }} px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-[#febf97] sm:w-auto" type="submit">{{ "Presente" if present else "Marcar" }}</button>
               </form>
             </div>
           {% endfor %}

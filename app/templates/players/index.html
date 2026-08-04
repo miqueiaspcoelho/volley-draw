@@ -11,16 +11,16 @@
           <h1 class="text-2xl font-semibold text-slate-900">Jogadores</h1>
           <p class="text-sm text-slate-600">Cadastro e notas para sorteio.</p>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <div class="inline-flex w-fit items-center gap-2 rounded border border-[#d2fdfe] bg-[#d2fdfe]/40 px-3 py-2 text-sm font-medium text-slate-700">
+        <div class="grid w-full grid-cols-1 gap-2 sm:w-auto sm:grid-cols-3">
+          <div class="inline-flex items-center gap-2 rounded border border-[#d2fdfe] bg-[#d2fdfe]/40 px-3 py-2 text-sm font-medium text-slate-700">
             <span class="h-2 w-2 rounded-full bg-[#fe6960]"></span>
             {{ players|length }} cadastrado(s)
           </div>
-          <div class="inline-flex w-fit items-center gap-2 rounded border border-green-200 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
+          <div class="inline-flex items-center gap-2 rounded border border-green-200 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
             <span class="h-2 w-2 rounded-full bg-green-500"></span>
             {{ active_count }} ativo(s)
           </div>
-          <div class="inline-flex w-fit items-center gap-2 rounded border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
+          <div class="inline-flex items-center gap-2 rounded border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600">
             <span class="h-2 w-2 rounded-full bg-slate-400"></span>
             {{ inactive_count }} inativo(s)
           </div>
@@ -45,7 +45,7 @@
           Arquivo CSV
           <input class="h-10 rounded border border-[#febf97] bg-white px-3 py-2 font-normal text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="csv_file" type="file" accept=".csv,text/csv" required>
         </label>
-        <button class="h-10 rounded bg-[#fe6960] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56]" type="submit">Importar</button>
+        <button class="h-10 w-full rounded bg-[#fe6960] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56] sm:w-auto" type="submit">Importar</button>
       </form>
     </section>
 
