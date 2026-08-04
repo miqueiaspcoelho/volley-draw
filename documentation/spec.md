@@ -77,6 +77,7 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - O texto para WhatsApp pode ser copiado e compartilhado manualmente.
 - O organizador consegue selecionar grupos opcionais de jogadores para manter juntos ou separar, por blocos visuais de times possiveis.
 - Nos criterios avancados, cada jogador marcado deve permanecer selecionado ao marcar outro jogador do mesmo grupo.
+- A quantidade de blocos dos criterios avancados deve acompanhar a quantidade de jogadores presentes dividida por `Por time`, arredondando para cima.
 - O organizador consegue abrir o menu lateral, ver o fundo desfocado e navegar entre Inicio, Jogadores, Partidas e Historico.
 - Nenhuma funcionalidade fora do MVP e implementada sem nova autorizacao.
 

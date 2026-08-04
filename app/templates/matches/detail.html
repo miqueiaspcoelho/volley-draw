@@ -39,9 +39,9 @@
               Defina jogadores para manter juntos ou separar. Campos vazios serao ignorados.
             </p>
             {% if present_players %}
-              <div class="grid gap-3">
-                {% for team_number in range(1, suggested_team_count + 1) %}
-                  <div class="rounded border border-[#affbff] bg-white p-3">
+              <div class="grid gap-3" data-advanced-criteria data-present-count="{{ present_players|length }}">
+                {% for team_number in range(1, present_players|length + 1) %}
+                  <div class="rounded border border-[#affbff] bg-white p-3" data-criteria-team="{{ team_number }}">
                     <div class="mb-3 text-sm font-semibold">Time {{ team_number }}</div>
                     <div class="grid gap-3 sm:grid-cols-2">
                       <fieldset class="grid gap-2 text-sm font-medium">
@@ -143,5 +143,35 @@
       {% endif %}
     </section>
   </section>
+
+  <script>
+    (() => {
+      const playersPerTeamInput = document.querySelector('input[name="players_per_team"]');
+      const criteria = document.querySelector("[data-advanced-criteria]");
+      if (!playersPerTeamInput || !criteria) {
+        return;
+      }
+
+      const presentCount = Number(criteria.dataset.presentCount || "0");
+      const teamBlocks = Array.from(criteria.querySelectorAll("[data-criteria-team]"));
+
+      const syncCriteriaBlocks = () => {
+        const playersPerTeam = Math.max(1, Number.parseInt(playersPerTeamInput.value || "1", 10));
+        const visibleTeams = Math.max(1, Math.ceil(presentCount / playersPerTeam));
+
+        teamBlocks.forEach((block) => {
+          const teamNumber = Number(block.dataset.criteriaTeam || "0");
+          const visible = teamNumber <= visibleTeams;
+          block.hidden = !visible;
+          block.querySelectorAll("input").forEach((input) => {
+            input.disabled = !visible;
+          });
+        });
+      };
+
+      playersPerTeamInput.addEventListener("input", syncCriteriaBlocks);
+      syncCriteriaBlocks();
+    })();
+  </script>
 {% endblock %}
 

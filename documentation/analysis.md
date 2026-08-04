@@ -112,6 +112,12 @@ Correcao em 2026-08-04:
 - Impacto: `force_together` e `force_apart` chegavam incompletos ao backend quando o usuario selecionava por cliques simples.
 - Solucao adotada: substituir os multiselects por checkboxes com o mesmo `name`, preservando o formato urlencoded de multiplos valores e o contrato da API.
 
+Correcao adicional em 2026-08-04:
+
+- Problema observado: a quantidade de blocos dos criterios avancados ficava presa ao calculo inicial do backend.
+- Impacto: ao alterar `Por time`, por exemplo 24 presentes e 4 por time, a tela continuava exibindo 4 blocos em vez de 6.
+- Solucao adotada: renderizar blocos suficientes para os presentes e sincronizar a visibilidade pelo calculo `ceil(presentes / jogadores_por_time)`, desabilitando campos ocultos.
+
 ## Etapa 15 - Melhorias Visuais: Navegacao
 
 Arquivos envolvidos:

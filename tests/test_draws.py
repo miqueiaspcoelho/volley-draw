@@ -320,6 +320,20 @@ def test_match_page_displays_advanced_criteria_blocks(client: TestClient, db_ses
     assert 'type="checkbox" name="force_apart_2"' in response.text
     assert 'name="force_apart_2"' in response.text
 
+
+def test_match_page_has_advanced_blocks_for_players_per_team_changes(client: TestClient, db_session: Session) -> None:
+    match_id = seed_present_players(db_session, [f"Jogador {index}" for index in range(1, 25)])
+
+    response = client.get(f"/partidas/{match_id}")
+
+    assert response.status_code == 200
+    assert 'data-present-count="24"' in response.text
+    assert 'data-criteria-team="6"' in response.text
+    assert 'name="force_together_6"' in response.text
+    assert 'name="force_apart_6"' in response.text
+    assert "Math.ceil(presentCount / playersPerTeam)" in response.text
+
+
 def test_match_page_returns_502_when_draw_api_fails(client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch) -> None:
     match_id = seed_present_player(db_session)
 

@@ -53,6 +53,7 @@ Implementado:
 
 - `force_together` e `force_apart` na tela de detalhe da partida agora devem usar checkboxes com o mesmo `name` por grupo.
 - Motivo: o multiselect nativo removia a selecao anterior em cliques simples, enviando grupos incompletos para a API.
+- Os blocos dos criterios avancados sao sincronizados no frontend por `ceil(presentes / players_per_team)`; blocos ocultos ficam com inputs desabilitados.
 - Backend nao precisa mudar: `_advanced_groups` ja le multiplos valores urlencoded por campo.
 
 ## Proximo Passo
