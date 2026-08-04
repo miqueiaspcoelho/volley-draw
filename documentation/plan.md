@@ -17,6 +17,7 @@
 - Etapa 13 - Preparacao para Deploy: concluida em 2026-08-03.
 - Etapa 14 - Criterios Avancados de Sorteio por Partida: concluida em 2026-08-04.
 - Etapa 15 - Melhorias Visuais: Navegacao Lateral Responsiva: concluida em 2026-08-04.
+- Etapa 16 - Melhorias Visuais da Tela de Partida: concluida em 2026-08-04.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -225,6 +226,17 @@ Status: concluida em 2026-08-04.
 - Validacoes: abrir menu, fechar por botao, overlay e Escape; validar visual em mobile e desktop.
 - Rollback: reverter alteracoes dos templates da etapa e manter documentacao anterior.
 - Conclusao: navegacao lateral responsiva implementada sem alterar comportamento funcional.
+
+## Etapa 16 - Melhorias Visuais da Tela de Partida
+
+Status: concluida em 2026-08-04.
+
+- Objetivo: modernizar visualmente a tela de detalhe da partida, mantendo comportamento atual.
+- Arquivos a alterar: `app/templates/matches/detail.html`, testes de renderizacao quando necessario e documentacao spec-driven.
+- Escopo: hierarquia, espacamento, cards, botoes, lista de presentes, criterios avancados, resultado e WhatsApp.
+- Fora do escopo: backend, banco, API externa, regras de sorteio, nomes de campos, rotas e novas dependencias.
+- Testes: executar suite automatizada existente.
+- Conclusao: tela de detalhe da partida recebeu ajustes visuais em hierarquia, secoes, campos, botoes, criterios avancados, resultado e lista de presentes, sem alterar comportamento funcional.
 
 
 

@@ -1,56 +1,66 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
-  <section class="space-y-4">
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <section class="space-y-5">
+    <div class="rounded border border-[#affbff] bg-white px-4 py-4 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-4">
       <div>
         <h1 class="text-2xl font-semibold">Partida #{{ match.id }}</h1>
-        <p class="text-sm text-slate-600">{{ match.scheduled_at.strftime('%d/%m/%Y %H:%M') }}{% if match.notes %} - {{ match.notes }}{% endif %}</p>
+        <p class="mt-1 text-sm text-slate-600">{{ match.scheduled_at.strftime('%d/%m/%Y %H:%M') }}{% if match.notes %} - {{ match.notes }}{% endif %}</p>
+        <div class="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+          <span class="rounded bg-[#d2fdfe] px-2.5 py-1 text-slate-700">{{ present_ids|length }} presentes</span>
+          <span class="rounded bg-[#fefac2] px-2.5 py-1 text-slate-700">{{ suggested_players_per_team }} por time</span>
+        </div>
       </div>
-      <a class="inline-flex h-10 items-center justify-center rounded border border-[#febf97] bg-[#fefac2] px-4 text-sm font-medium transition hover:bg-[#febf97]" href="/partidas">Voltar</a>
+      <a class="mt-4 inline-flex h-10 items-center justify-center rounded border border-[#febf97] bg-[#fefac2] px-4 text-sm font-medium transition hover:bg-[#febf97] sm:mt-0" href="/partidas">Voltar</a>
     </div>
 
     {% if error %}
-      <div class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{{ error }}</div>
+      <div class="rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800">{{ error }}</div>
     {% endif %}
 
-    <section class="rounded border border-[#affbff] bg-white p-4 shadow-sm">
-      <h2 class="mb-3 text-base font-semibold">Sorteio</h2>
+    <section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
+      <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
+        <h2 class="text-base font-semibold">Sorteio</h2>
+      </div>
+      <div class="p-4">
       <form class="space-y-4" method="post" action="/partidas/{{ match.id }}/sortear" hx-post="/partidas/{{ match.id }}/sortear" hx-target="body">
-        <div class="grid gap-3 sm:grid-cols-[120px_120px_auto]">
+        <div class="grid gap-3 sm:grid-cols-[140px_140px_auto]">
           <label class="grid gap-1 text-sm font-medium">
             Por time
-            <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="players_per_team" type="number" min="1" value="{{ suggested_players_per_team }}" required>
+            <input class="h-11 rounded border border-[#febf97] bg-white px-3 font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="players_per_team" type="number" min="1" value="{{ suggested_players_per_team }}" required>
           </label>
           <label class="grid gap-1 text-sm font-medium">
             Range
-            <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="range" type="number" min="0" value="2" required>
+            <input class="h-11 rounded border border-[#febf97] bg-white px-3 font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="range" type="number" min="0" value="2" required>
           </label>
-          <button class="h-10 self-end rounded bg-[#fe6960] px-4 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="submit">Sortear</button>
+          <button class="h-11 self-end rounded bg-[#fe6960] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56] focus:outline-none focus:ring-2 focus:ring-[#febf97]" type="submit">Sortear</button>
         </div>
 
-        <details class="rounded border border-[#affbff] bg-[#d2fdfe]/40">
-          <summary class="cursor-pointer px-3 py-2 text-sm font-semibold">
+        <details class="overflow-hidden rounded border border-[#affbff] bg-[#d2fdfe]/30">
+          <summary class="cursor-pointer bg-white/70 px-4 py-3 text-sm font-semibold transition hover:bg-[#fefac2]/70">
             Criterios avancados
             <span class="font-normal text-slate-600">(opcional)</span>
           </summary>
-          <div class="space-y-3 border-t border-[#affbff] p-3">
+          <div class="space-y-3 border-t border-[#affbff] p-4">
             <p class="text-sm text-slate-600">
               Defina jogadores para manter juntos ou separar. Campos vazios serao ignorados.
             </p>
             {% if present_players %}
               <div class="grid gap-3" data-advanced-criteria data-present-count="{{ present_players|length }}">
                 {% for team_number in range(1, present_players|length + 1) %}
-                  <div class="rounded border border-[#affbff] bg-white p-3" data-criteria-team="{{ team_number }}">
-                    <div class="mb-3 text-sm font-semibold">Time {{ team_number }}</div>
+                  <div class="rounded border border-[#affbff] bg-white p-3 shadow-sm" data-criteria-team="{{ team_number }}">
+                    <div class="mb-3 flex items-center justify-between gap-3">
+                      <div class="text-sm font-semibold">Time {{ team_number }}</div>
+                      <span class="rounded bg-[#d2fdfe] px-2 py-1 text-xs font-semibold text-slate-600">criterios</span>
+                    </div>
                     <div class="grid gap-3 sm:grid-cols-2">
                       <fieldset class="grid gap-2 text-sm font-medium">
                         <legend>Manter juntos</legend>
-                        <div class="grid max-h-48 gap-1 overflow-y-auto rounded border border-[#febf97] bg-white p-2 font-normal focus-within:ring-2 focus-within:ring-[#fe6960]">
+                        <div class="flex max-h-48 flex-wrap gap-2 overflow-y-auto rounded border border-[#febf97] bg-white p-2 font-normal focus-within:ring-2 focus-within:ring-[#fe6960]">
                           {% for player in present_players %}
-                            <label class="flex items-center gap-2 rounded px-2 py-1 hover:bg-[#fefac2]">
-                              <input class="h-4 w-4 accent-[#fe6960]" type="checkbox" name="force_together_{{ team_number }}" value="{{ player.name }}">
-                              <span>{{ player.name }}</span>
+                            <label class="cursor-pointer">
+                              <input class="peer sr-only" type="checkbox" name="force_together_{{ team_number }}" value="{{ player.name }}">
+                              <span class="block rounded border border-[#d2fdfe] bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-[#febf97] hover:bg-[#fefac2] peer-checked:border-[#fe6960] peer-checked:bg-[#fe6960] peer-checked:text-white">{{ player.name }}</span>
                             </label>
                           {% endfor %}
                         </div>
@@ -58,11 +68,11 @@
                       </fieldset>
                       <fieldset class="grid gap-2 text-sm font-medium">
                         <legend>Separar</legend>
-                        <div class="grid max-h-48 gap-1 overflow-y-auto rounded border border-[#febf97] bg-white p-2 font-normal focus-within:ring-2 focus-within:ring-[#fe6960]">
+                        <div class="flex max-h-48 flex-wrap gap-2 overflow-y-auto rounded border border-[#febf97] bg-white p-2 font-normal focus-within:ring-2 focus-within:ring-[#fe6960]">
                           {% for player in present_players %}
-                            <label class="flex items-center gap-2 rounded px-2 py-1 hover:bg-[#fefac2]">
-                              <input class="h-4 w-4 accent-[#fe6960]" type="checkbox" name="force_apart_{{ team_number }}" value="{{ player.name }}">
-                              <span>{{ player.name }}</span>
+                            <label class="cursor-pointer">
+                              <input class="peer sr-only" type="checkbox" name="force_apart_{{ team_number }}" value="{{ player.name }}">
+                              <span class="block rounded border border-[#d2fdfe] bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-[#febf97] hover:bg-[#fefac2] peer-checked:border-[#fe6960] peer-checked:bg-[#fe6960] peer-checked:text-white">{{ player.name }}</span>
                             </label>
                           {% endfor %}
                         </div>
@@ -78,20 +88,29 @@
           </div>
         </details>
       </form>
+      </div>
     </section>
 
     {% if latest_draw %}
-      <section class="rounded border border-[#affbff] bg-white shadow-sm">
+      <section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
         <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
           <h2 class="text-base font-semibold">Resultado</h2>
         </div>
         <div class="grid gap-4 p-4 sm:grid-cols-2">
           {% for team in latest_draw.normalized_result.get('teams', []) %}
-            <div class="rounded border border-[#affbff] p-3">
-              <div class="mb-2 font-semibold">{{ team.get('team_name', 'Time') }}</div>
+            <div class="rounded border border-[#affbff] bg-white p-3 shadow-sm">
+              <div class="mb-3 flex items-center justify-between gap-3 border-b border-[#d2fdfe] pb-2">
+                <div class="font-semibold">{{ team.get('team_name', 'Time') }}</div>
+                {% if team.get('average_overall') is not none %}
+                  <span class="rounded bg-[#d2fdfe] px-2 py-1 text-xs font-semibold text-slate-600">{{ team.get('average_overall') }}</span>
+                {% endif %}
+              </div>
               <ul class="space-y-1 text-sm">
                 {% for player in team.get('players', []) %}
-                  <li>{{ player.get('name') }}{% if player.get('overall') is not none %} <span class="text-slate-500">({{ player.get('overall') }})</span>{% endif %}</li>
+                  <li class="flex items-center justify-between gap-3 rounded bg-slate-50 px-2 py-1.5">
+                    <span>{{ player.get('name') }}</span>
+                    {% if player.get('overall') is not none %}<span class="text-xs font-semibold text-slate-500">{{ player.get('overall') }}</span>{% endif %}
+                  </li>
                 {% endfor %}
               </ul>
             </div>
@@ -105,35 +124,36 @@
       </section>
 
       {% if share_text %}
-        <section class="rounded border border-[#affbff] bg-white shadow-sm">
+        <section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
           <div class="flex items-center justify-between gap-3 border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
             <h2 class="text-base font-semibold">WhatsApp</h2>
-            <button class="h-9 rounded bg-[#fe6960] px-3 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="button" onclick="navigator.clipboard.writeText(document.getElementById('share-text').value)">Copiar</button>
+            <button class="h-9 rounded bg-[#fe6960] px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56] focus:outline-none focus:ring-2 focus:ring-[#febf97]" type="button" onclick="navigator.clipboard.writeText(document.getElementById('share-text').value)">Copiar</button>
           </div>
           <div class="p-4">
-            <textarea id="share-text" class="min-h-64 w-full rounded border border-[#febf97] p-3 font-mono text-sm" readonly>{{ share_text }}</textarea>
+            <textarea id="share-text" class="min-h-64 w-full rounded border border-[#febf97] bg-slate-50 p-3 font-mono text-sm shadow-inner focus:outline-none focus:ring-2 focus:ring-[#fe6960]" readonly>{{ share_text }}</textarea>
           </div>
         </section>
       {% endif %}
     {% endif %}
 
-    <section class="rounded border border-[#affbff] bg-white shadow-sm">
-      <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
+    <section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
+      <div class="flex items-center justify-between gap-3 border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
         <h2 class="text-base font-semibold">Presentes ({{ present_ids|length }})</h2>
+        <span class="rounded bg-white px-2 py-1 text-xs font-semibold text-slate-600">{{ active_players|length }} ativos</span>
       </div>
       {% if active_players %}
         <div class="divide-y divide-slate-100">
           {% for player in active_players %}
             {% set present = player.id in present_ids %}
-            <div class="flex items-center justify-between gap-3 px-4 py-3">
-              <div>
+            <div class="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-[#d2fdfe]/30">
+              <div class="min-w-0">
                 <div class="font-medium">{{ player.name }}</div>
-                <div class="text-xs text-slate-600">Media {{ "%.1f"|format(player.overall) }}</div>
+                <div class="mt-1 inline-flex rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">Media {{ "%.1f"|format(player.overall) }}</div>
               </div>
               <form method="post" action="/partidas/{{ match.id }}/presencas" hx-post="/partidas/{{ match.id }}/presencas" hx-target="body">
                 <input type="hidden" name="player_id" value="{{ player.id }}">
                 <input type="hidden" name="present" value="{{ 'false' if present else 'true' }}">
-                <button class="h-9 rounded {{ 'bg-[#fe6960] text-white' if present else 'border border-[#febf97] hover:bg-[#fefac2]' }} px-3 text-sm transition" type="submit">{{ "Presente" if present else "Marcar" }}</button>
+                <button class="h-9 rounded {{ 'bg-[#fe6960] text-white shadow-sm' if present else 'border border-[#febf97] bg-white hover:bg-[#fefac2]' }} px-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-[#febf97]" type="submit">{{ "Presente" if present else "Marcar" }}</button>
               </form>
             </div>
           {% endfor %}

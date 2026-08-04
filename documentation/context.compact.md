@@ -47,7 +47,7 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Etapa Atual
 
-Correcao dos criterios avancados de sorteio concluida em 2026-08-04.
+Etapa 16 - Melhorias Visuais da Tela de Partida concluida em 2026-08-04.
 
 Implementado:
 
@@ -55,10 +55,12 @@ Implementado:
 - Motivo: o multiselect nativo removia a selecao anterior em cliques simples, enviando grupos incompletos para a API.
 - Os blocos dos criterios avancados sao sincronizados no frontend por `ceil(presentes / players_per_team)`; blocos ocultos ficam com inputs desabilitados.
 - Backend nao precisa mudar: `_advanced_groups` ja le multiplos valores urlencoded por campo.
+- Nova etapa deve ser puramente visual em `app/templates/matches/detail.html`, sem alterar rotas, nomes de campos, payload ou regras.
+- Implementado: cabecalho de partida com badges, card de sorteio refinado, criterios em chips selecionaveis, resultado mais escaneavel, WhatsApp e lista de presentes com estados visuais melhores.
 
 ## Proximo Passo
 
-Validar manualmente no navegador a marcacao de varios jogadores em `force_together` e `force_apart`. Deploy efetivo nao foi executado.
+Validar manualmente no navegador a tela de detalhe de uma partida com banco local disponivel. Deploy efetivo nao foi executado.
 
 
 

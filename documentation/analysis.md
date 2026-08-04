@@ -144,3 +144,20 @@ Impacto tecnico:
 
 - Sem alteracao de backend, banco, API, schemas ou regras de negocio.
 - Risco principal: regressao de renderizacao Jinja ou de seletores esperados nos testes de pagina.
+
+## Etapa 16 - Melhorias Visuais da Tela de Partida
+
+Arquivos envolvidos:
+
+- `app/templates/matches/detail.html`: tela principal de operacao da partida.
+- `tests/test_draws.py`: testes de renderizacao e envio do formulario.
+
+Escopo:
+
+- Alteracao puramente visual em cards, botoes, campos, criterios avancados, resultado e lista de presentes.
+- Sem alteracao de rotas, schemas, services, banco, nomes de campos ou contrato da API.
+
+Riscos:
+
+- Quebrar seletores esperados nos testes.
+- Alterar acidentalmente `name`, `action`, `hx-post` ou estrutura enviada pelo formulario.
