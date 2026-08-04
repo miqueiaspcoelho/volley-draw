@@ -7,9 +7,90 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   </head>
-  <body class="bg-slate-50 text-slate-950">
-    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-5 sm:px-6">
+  <body class="bg-[#d2fdfe] text-slate-950">
+    {% set current_path = request.url.path if request is defined else "" %}
+    {% set show_navigation = current_path != "/login" %}
+    {% if show_navigation %}
+      <header class="sticky top-0 z-30 border-b border-[#affbff]/70 bg-white/85 backdrop-blur">
+        <div class="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
+          <a class="text-base font-semibold text-slate-950" href="/">{{ app_name }}</a>
+          <button
+            class="inline-flex h-10 w-10 items-center justify-center rounded border border-[#febf97] bg-[#fefac2] text-slate-950 shadow-sm transition hover:bg-[#febf97] focus:outline-none focus:ring-2 focus:ring-[#fe6960]"
+            type="button"
+            aria-label="Abrir menu"
+            aria-controls="site-menu"
+            aria-expanded="false"
+            data-menu-open
+          >
+            <span class="sr-only">Abrir menu</span>
+            <span class="grid gap-1.5">
+              <span class="block h-0.5 w-5 bg-slate-950"></span>
+              <span class="block h-0.5 w-5 bg-slate-950"></span>
+              <span class="block h-0.5 w-5 bg-slate-950"></span>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <div class="fixed inset-0 z-40 hidden bg-slate-950/30 backdrop-blur-sm" data-menu-overlay></div>
+      <aside
+        id="site-menu"
+        class="fixed inset-y-0 left-0 z-50 flex w-72 max-w-[86vw] -translate-x-full flex-col border-r border-[#affbff] bg-white shadow-xl transition-transform duration-200 ease-out"
+        aria-hidden="true"
+        data-menu-panel
+      >
+        <div class="flex h-14 items-center justify-between border-b border-[#d2fdfe] px-4">
+          <a class="font-semibold text-slate-950" href="/">{{ app_name }}</a>
+          <button
+            class="inline-flex h-9 w-9 items-center justify-center rounded border border-[#febf97] bg-[#fefac2] text-xl leading-none transition hover:bg-[#febf97] focus:outline-none focus:ring-2 focus:ring-[#fe6960]"
+            type="button"
+            aria-label="Fechar menu"
+            data-menu-close
+          >
+            &times;
+          </button>
+        </div>
+        <nav class="grid gap-2 p-4 text-sm font-medium">
+          <a class="rounded px-3 py-2 transition {{ 'bg-[#affbff] text-slate-950' if current_path == '/' else 'hover:bg-[#d2fdfe]' }}" href="/">Inicio</a>
+          <a class="rounded px-3 py-2 transition {{ 'bg-[#affbff] text-slate-950' if current_path.startswith('/jogadores') else 'hover:bg-[#d2fdfe]' }}" href="/jogadores">Jogadores</a>
+          <a class="rounded px-3 py-2 transition {{ 'bg-[#affbff] text-slate-950' if current_path.startswith('/partidas') else 'hover:bg-[#d2fdfe]' }}" href="/partidas">Partidas</a>
+          <a class="rounded px-3 py-2 transition {{ 'bg-[#affbff] text-slate-950' if current_path.startswith('/historico') else 'hover:bg-[#d2fdfe]' }}" href="/historico">Historico</a>
+        </nav>
+        <form class="mt-auto border-t border-[#d2fdfe] p-4" method="post" action="/logout">
+          <button class="h-10 w-full rounded bg-[#fe6960] px-4 text-sm font-semibold text-white transition hover:bg-[#e85e56] focus:outline-none focus:ring-2 focus:ring-[#febf97]" type="submit">Sair</button>
+        </form>
+      </aside>
+    {% endif %}
+
+    <main class="mx-auto min-h-screen w-full max-w-6xl px-4 py-5 sm:px-6 {{ 'pt-6' if show_navigation else '' }}" data-page-content>
       {% block content %}{% endblock %}
     </main>
+    {% if show_navigation %}
+      <script>
+        (() => {
+          const menuPanel = document.querySelector("[data-menu-panel]");
+          const menuOverlay = document.querySelector("[data-menu-overlay]");
+          const menuOpen = document.querySelector("[data-menu-open]");
+          const menuClose = document.querySelector("[data-menu-close]");
+
+          function setMenu(open) {
+            menuPanel.classList.toggle("-translate-x-full", !open);
+            menuOverlay.classList.toggle("hidden", !open);
+            menuPanel.setAttribute("aria-hidden", String(!open));
+            menuOpen.setAttribute("aria-expanded", String(open));
+            document.body.classList.toggle("overflow-hidden", open);
+          }
+
+          menuOpen.addEventListener("click", () => setMenu(true));
+          menuClose.addEventListener("click", () => setMenu(false));
+          menuOverlay.addEventListener("click", () => setMenu(false));
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+              setMenu(false);
+            }
+          });
+        })();
+      </script>
+    {% endif %}
   </body>
 </html>

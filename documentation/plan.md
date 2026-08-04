@@ -16,6 +16,7 @@
 - Etapa 12 - Docker: concluida em 2026-08-03.
 - Etapa 13 - Preparacao para Deploy: concluida em 2026-08-03.
 - Etapa 14 - Criterios Avancados de Sorteio por Partida: concluida em 2026-08-04.
+- Etapa 15 - Melhorias Visuais: Navegacao Lateral Responsiva: concluida em 2026-08-04.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -203,6 +204,25 @@ Status: concluida em 2026-08-04.
   - validar responsividade da tela em desktop e mobile.
 - Rollback: remover a secao de criterios avancados da interface e deixar o servico de payload ignorando `force_together` e `force_apart`, preservando o fluxo atual de sorteio.
 - Conclusao: tela de partida permite informar criterios avancados opcionais em blocos por time possivel; backend envia os grupos para a API externa e valida jogadores ausentes ou duplicados.
+
+## Etapa 15 - Melhorias Visuais: Navegacao Lateral Responsiva
+
+Status: concluida em 2026-08-04.
+
+- Objetivo: adicionar navegacao global responsiva por menu lateral estilo hamburger, com fundo desfocado ao abrir, usando a paleta definida em `documentation/colorsdefault.md`.
+- Arquivos alterados: templates base, home, jogadores, partidas, historico e login; documentacao spec-driven.
+- Escopo: somente visual estetico. Sem alteracao de funcionalidade, rotas, contratos de API, banco ou migracoes.
+- Tarefas:
+  - criar header com botao hamburger em `base.html`;
+  - criar drawer lateral com Inicio, Jogadores, Partidas, Historico e Sair;
+  - aplicar overlay com `backdrop-blur`;
+  - destacar rota atual no menu;
+  - remover links globais `Inicio` redundantes das paginas principais;
+  - ajustar bordas, botoes e campos para a paleta oficial.
+- Testes necessarios: suite automatizada existente para garantir que paginas e formularios continuam renderizando e funcionando.
+- Validacoes: abrir menu, fechar por botao, overlay e Escape; validar visual em mobile e desktop.
+- Rollback: reverter alteracoes dos templates da etapa e manter documentacao anterior.
+- Conclusao: navegacao lateral responsiva implementada sem alterar comportamento funcional.
 
 
 

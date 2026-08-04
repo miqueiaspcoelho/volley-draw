@@ -7,46 +7,46 @@
         <h1 class="text-2xl font-semibold">Partida #{{ match.id }}</h1>
         <p class="text-sm text-slate-600">{{ match.scheduled_at.strftime('%d/%m/%Y %H:%M') }}{% if match.notes %} - {{ match.notes }}{% endif %}</p>
       </div>
-      <a class="inline-flex h-10 items-center justify-center rounded border border-slate-300 px-4 text-sm font-medium" href="/partidas">Voltar</a>
+      <a class="inline-flex h-10 items-center justify-center rounded border border-[#febf97] bg-[#fefac2] px-4 text-sm font-medium transition hover:bg-[#febf97]" href="/partidas">Voltar</a>
     </div>
 
     {% if error %}
       <div class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{{ error }}</div>
     {% endif %}
 
-    <section class="rounded border border-slate-200 bg-white p-4 shadow-sm">
+    <section class="rounded border border-[#affbff] bg-white p-4 shadow-sm">
       <h2 class="mb-3 text-base font-semibold">Sorteio</h2>
       <form class="space-y-4" method="post" action="/partidas/{{ match.id }}/sortear" hx-post="/partidas/{{ match.id }}/sortear" hx-target="body">
         <div class="grid gap-3 sm:grid-cols-[120px_120px_auto]">
           <label class="grid gap-1 text-sm font-medium">
             Por time
-            <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="players_per_team" type="number" min="1" value="{{ suggested_players_per_team }}" required>
+            <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="players_per_team" type="number" min="1" value="{{ suggested_players_per_team }}" required>
           </label>
           <label class="grid gap-1 text-sm font-medium">
             Range
-            <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="range" type="number" min="0" value="2" required>
+            <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="range" type="number" min="0" value="2" required>
           </label>
-          <button class="h-10 self-end rounded bg-slate-900 px-4 text-sm font-medium text-white" type="submit">Sortear</button>
+          <button class="h-10 self-end rounded bg-[#fe6960] px-4 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="submit">Sortear</button>
         </div>
 
-        <details class="rounded border border-slate-200 bg-slate-50">
+        <details class="rounded border border-[#affbff] bg-[#d2fdfe]/40">
           <summary class="cursor-pointer px-3 py-2 text-sm font-semibold">
             Criterios avancados
             <span class="font-normal text-slate-600">(opcional)</span>
           </summary>
-          <div class="space-y-3 border-t border-slate-200 p-3">
+          <div class="space-y-3 border-t border-[#affbff] p-3">
             <p class="text-sm text-slate-600">
               Defina jogadores para manter juntos ou separar. Campos vazios serao ignorados.
             </p>
             {% if present_players %}
               <div class="grid gap-3">
                 {% for team_number in range(1, suggested_team_count + 1) %}
-                  <div class="rounded border border-slate-200 bg-white p-3">
+                  <div class="rounded border border-[#affbff] bg-white p-3">
                     <div class="mb-3 text-sm font-semibold">Time {{ team_number }}</div>
                     <div class="grid gap-3 sm:grid-cols-2">
                       <label class="grid gap-1 text-sm font-medium">
                         Manter juntos
-                        <select class="min-h-24 rounded border border-slate-300 px-2 py-2 font-normal" name="force_together_{{ team_number }}" multiple>
+                        <select class="min-h-24 rounded border border-[#febf97] px-2 py-2 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="force_together_{{ team_number }}" multiple>
                           {% for player in present_players %}
                             <option value="{{ player.name }}">{{ player.name }}</option>
                           {% endfor %}
@@ -55,7 +55,7 @@
                       </label>
                       <label class="grid gap-1 text-sm font-medium">
                         Separar
-                        <select class="min-h-24 rounded border border-slate-300 px-2 py-2 font-normal" name="force_apart_{{ team_number }}" multiple>
+                        <select class="min-h-24 rounded border border-[#febf97] px-2 py-2 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="force_apart_{{ team_number }}" multiple>
                           {% for player in present_players %}
                             <option value="{{ player.name }}">{{ player.name }}</option>
                           {% endfor %}
@@ -75,13 +75,13 @@
     </section>
 
     {% if latest_draw %}
-      <section class="rounded border border-slate-200 bg-white shadow-sm">
-        <div class="border-b border-slate-200 px-4 py-3">
+      <section class="rounded border border-[#affbff] bg-white shadow-sm">
+        <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
           <h2 class="text-base font-semibold">Resultado</h2>
         </div>
         <div class="grid gap-4 p-4 sm:grid-cols-2">
           {% for team in latest_draw.normalized_result.get('teams', []) %}
-            <div class="rounded border border-slate-200 p-3">
+            <div class="rounded border border-[#affbff] p-3">
               <div class="mb-2 font-semibold">{{ team.get('team_name', 'Time') }}</div>
               <ul class="space-y-1 text-sm">
                 {% for player in team.get('players', []) %}
@@ -92,27 +92,27 @@
           {% endfor %}
         </div>
         {% if latest_draw.normalized_result.get('leftovers') %}
-          <div class="border-t border-slate-200 px-4 py-3 text-sm text-slate-600">
+          <div class="border-t border-[#d2fdfe] px-4 py-3 text-sm text-slate-600">
             Sobras: {{ latest_draw.normalized_result.get('leftovers')|join(', ') }}
           </div>
         {% endif %}
       </section>
 
       {% if share_text %}
-        <section class="rounded border border-slate-200 bg-white shadow-sm">
-          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
+        <section class="rounded border border-[#affbff] bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
             <h2 class="text-base font-semibold">WhatsApp</h2>
-            <button class="h-9 rounded bg-slate-900 px-3 text-sm font-medium text-white" type="button" onclick="navigator.clipboard.writeText(document.getElementById('share-text').value)">Copiar</button>
+            <button class="h-9 rounded bg-[#fe6960] px-3 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="button" onclick="navigator.clipboard.writeText(document.getElementById('share-text').value)">Copiar</button>
           </div>
           <div class="p-4">
-            <textarea id="share-text" class="min-h-64 w-full rounded border border-slate-300 p-3 font-mono text-sm" readonly>{{ share_text }}</textarea>
+            <textarea id="share-text" class="min-h-64 w-full rounded border border-[#febf97] p-3 font-mono text-sm" readonly>{{ share_text }}</textarea>
           </div>
         </section>
       {% endif %}
     {% endif %}
 
-    <section class="rounded border border-slate-200 bg-white shadow-sm">
-      <div class="border-b border-slate-200 px-4 py-3">
+    <section class="rounded border border-[#affbff] bg-white shadow-sm">
+      <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
         <h2 class="text-base font-semibold">Presentes ({{ present_ids|length }})</h2>
       </div>
       {% if active_players %}
@@ -127,7 +127,7 @@
               <form method="post" action="/partidas/{{ match.id }}/presencas" hx-post="/partidas/{{ match.id }}/presencas" hx-target="body">
                 <input type="hidden" name="player_id" value="{{ player.id }}">
                 <input type="hidden" name="present" value="{{ 'false' if present else 'true' }}">
-                <button class="h-9 rounded {{ 'bg-slate-900 text-white' if present else 'border border-slate-300' }} px-3 text-sm" type="submit">{{ "Presente" if present else "Marcar" }}</button>
+                <button class="h-9 rounded {{ 'bg-[#fe6960] text-white' if present else 'border border-[#febf97] hover:bg-[#fefac2]' }} px-3 text-sm transition" type="submit">{{ "Presente" if present else "Marcar" }}</button>
               </form>
             </div>
           {% endfor %}

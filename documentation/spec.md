@@ -41,11 +41,13 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - RF11: Gerar texto simples para compartilhamento no WhatsApp.
 - RF12: Permitir consultar historico de partidas e sorteios.
 - RF13: Permitir informar criterios opcionais `force_together` e `force_apart` na tela da partida antes do sorteio.
+- RF14: Exibir navegacao global por menu lateral responsivo, acionado por hamburger, com acesso as abas existentes.
 
 ## Requisitos Nao Funcionais
 
 - Aplicacao responsiva, com uso prioritario em navegador mobile.
 - Interface simples, objetiva e facil de operar durante a organizacao da partida.
+- Navegacao responsiva deve preservar as telas existentes e usar a paleta definida em `documentation/colorsdefault.md`.
 - Persistencia em PostgreSQL.
 - Backend em Python com FastAPI.
 - Templates server-side com Jinja2 e interacoes progressivas com HTMX.
@@ -74,6 +76,7 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - O historico permite consultar partidas e sorteios anteriores.
 - O texto para WhatsApp pode ser copiado e compartilhado manualmente.
 - O organizador consegue selecionar grupos opcionais de jogadores para manter juntos ou separar, por blocos visuais de times possiveis.
+- O organizador consegue abrir o menu lateral, ver o fundo desfocado e navegar entre Inicio, Jogadores, Partidas e Historico.
 - Nenhuma funcionalidade fora do MVP e implementada sem nova autorizacao.
 
 ## Fora do Escopo

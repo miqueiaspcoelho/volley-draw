@@ -1,17 +1,24 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-  <section class="space-y-3">
-    <h1 class="text-2xl font-semibold">{{ app_name }}</h1>
-    <p class="text-sm text-slate-600">Aplicacao em preparacao.</p>
-    <div class="flex gap-2">
-      <a class="inline-flex h-10 items-center rounded bg-slate-900 px-4 text-sm font-medium text-white" href="/jogadores">Jogadores</a>
-      <a class="inline-flex h-10 items-center rounded border border-slate-300 px-4 text-sm font-medium" href="/partidas">Partidas</a>
-      <a class="inline-flex h-10 items-center rounded border border-slate-300 px-4 text-sm font-medium" href="/historico">Historico</a>
-      <form method="post" action="/logout"><button class="h-10 rounded border border-slate-300 px-4 text-sm font-medium" type="submit">Sair</button></form>
+  <section class="space-y-5">
+    <div>
+      <h1 class="text-2xl font-semibold">{{ app_name }}</h1>
+      <p class="text-sm text-slate-700">Organizacao de jogadores, partidas e sorteios.</p>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-3">
+      <a class="rounded border border-[#affbff] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#fe6960]" href="/jogadores">
+        <span class="block text-base font-semibold">Jogadores</span>
+        <span class="mt-1 block text-sm text-slate-600">Cadastro e notas.</span>
+      </a>
+      <a class="rounded border border-[#affbff] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#fe6960]" href="/partidas">
+        <span class="block text-base font-semibold">Partidas</span>
+        <span class="mt-1 block text-sm text-slate-600">Presencas e sorteio.</span>
+      </a>
+      <a class="rounded border border-[#affbff] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#fe6960]" href="/historico">
+        <span class="block text-base font-semibold">Historico</span>
+        <span class="mt-1 block text-sm text-slate-600">Resultados salvos.</span>
+      </a>
     </div>
   </section>
 {% endblock %}
-
-
-

@@ -47,20 +47,20 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Etapa Atual
 
-Etapa 14 de Criterios Avancados de Sorteio por Partida concluida em 2026-08-04.
+Etapa 15 de Melhorias Visuais: Navegacao Lateral Responsiva concluida em 2026-08-04.
 
 Implementado:
 
-- Secao opcional "Criterios avancados" na tela de detalhe da partida.
-- Blocos visuais por time possivel, calculados a partir dos presentes e da sugestao de jogadores por time.
-- Multiselects para `force_together` e `force_apart`.
-- Conversao do formulario HTML para arrays de arrays de nomes aceitos pela API externa.
-- Validacao central no servico de sorteio para rejeitar jogador ausente e duplicidade dentro do mesmo grupo.
-- Testes de payload, validacao e renderizacao/envio pela tela.
+- Menu global no `base.html`, acionado por hamburger.
+- Drawer lateral com Inicio, Jogadores, Partidas, Historico e Sair.
+- Overlay com fundo desfocado ao abrir o menu.
+- Destaque visual da rota atual.
+- Paleta de `documentation/colorsdefault.md` aplicada em navegacao, botoes, campos e cards principais.
+- Links globais `Inicio` removidos das paginas principais para reduzir redundancia.
 
 ## Proximo Passo
 
-Se aprovado, validar manualmente no navegador o preenchimento mobile/desktop dos criterios avancados. Deploy efetivo nao foi executado.
+Validar manualmente no navegador o menu em mobile/desktop, incluindo fechamento por overlay, botao fechar e tecla Escape. Deploy efetivo nao foi executado.
 
 
 

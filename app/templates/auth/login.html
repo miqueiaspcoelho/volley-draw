@@ -11,16 +11,16 @@
       <div class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{{ error }}</div>
     {% endif %}
 
-    <form class="space-y-3 rounded border border-slate-200 bg-white p-4 shadow-sm" method="post" action="/login">
+    <form class="space-y-3 rounded border border-[#affbff] bg-white p-4 shadow-sm" method="post" action="/login">
       <label class="grid gap-1 text-sm font-medium">
         Usuario
-        <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="username" autocomplete="username" required>
+        <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="username" autocomplete="username" required>
       </label>
       <label class="grid gap-1 text-sm font-medium">
         PIN
-        <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="pin" type="password" inputmode="numeric" autocomplete="current-password" required>
+        <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="pin" type="password" inputmode="numeric" autocomplete="current-password" required>
       </label>
-      <button class="h-10 w-full rounded bg-slate-900 px-4 text-sm font-medium text-white" type="submit">Entrar</button>
+      <button class="h-10 w-full rounded bg-[#fe6960] px-4 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="submit">Entrar</button>
     </form>
   </section>
 {% endblock %}

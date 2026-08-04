@@ -105,3 +105,30 @@ Impacto tecnico:
 - Nao houve alteracao estrutural de banco.
 - O contrato externo permanece o mesmo: `force_together` e `force_apart` continuam como arrays de arrays de nomes.
 - Chamadas sem criterios avancados continuam usando listas vazias.
+
+## Etapa 15 - Melhorias Visuais: Navegacao
+
+Arquivos envolvidos:
+
+- `app/templates/base.html`: ponto central da navegacao global.
+- `app/templates/home.html`: entrada visual com atalhos para as abas existentes.
+- `app/templates/players/index.html` e fragmentos de jogadores: remocao de link global redundante e ajuste estetico.
+- `app/templates/matches/index.html`, `app/templates/matches/detail.html`, `app/templates/history/index.html`, `app/templates/history/detail.html` e `app/templates/auth/login.html`: ajuste visual sem alterar formularios, rotas ou campos.
+
+Fluxo atual observado:
+
+- Antes da etapa, a home concentrava links para Jogadores, Partidas, Historico e logout.
+- As paginas internas usavam links `Inicio` ou `Voltar`; nao havia menu global no `base.html`.
+- O projeto usa Tailwind por CDN e classes inline nos templates.
+
+Decisoes:
+
+- Implementar o menu no `base.html`, sem nova dependencia.
+- Ocultar a navegacao na tela de login para evitar logout/menu antes da autenticacao.
+- Manter links contextuais `Voltar` nos detalhes.
+- Usar a paleta de `documentation/colorsdefault.md`.
+
+Impacto tecnico:
+
+- Sem alteracao de backend, banco, API, schemas ou regras de negocio.
+- Risco principal: regressao de renderizacao Jinja ou de seletores esperados nos testes de pagina.

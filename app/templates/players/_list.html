@@ -1,11 +1,11 @@
-﻿<section class="overflow-hidden rounded border border-slate-200 bg-white shadow-sm">
-  <div class="border-b border-slate-200 px-4 py-3">
+<section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
+  <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
     <h2 class="text-base font-semibold">Lista</h2>
   </div>
   {% if players %}
     <div class="overflow-x-auto">
       <table class="w-full min-w-[760px] text-left text-sm">
-        <thead class="bg-slate-100 text-xs uppercase text-slate-600">
+        <thead class="bg-[#d2fdfe]/60 text-xs uppercase text-slate-700">
           <tr>
             <th class="px-3 py-2">Nome</th>
             <th class="px-3 py-2">Notas</th>
@@ -28,10 +28,10 @@
               <td class="px-3 py-3">{{ "Ativo" if player.active else "Inativo" }}</td>
               <td class="px-3 py-3">
                 <div class="flex justify-end gap-2">
-                  <a class="inline-flex h-9 items-center rounded border border-slate-300 px-3 text-sm" href="/jogadores/{{ player.id }}/editar" hx-get="/jogadores/{{ player.id }}/editar" hx-target="body">Editar</a>
+                  <a class="inline-flex h-9 items-center rounded border border-[#febf97] bg-[#fefac2] px-3 text-sm transition hover:bg-[#febf97]" href="/jogadores/{{ player.id }}/editar" hx-get="/jogadores/{{ player.id }}/editar" hx-target="body">Editar</a>
                   <form method="post" action="/jogadores/{{ player.id }}/ativo" hx-post="/jogadores/{{ player.id }}/ativo" hx-target="body">
                     <input type="hidden" name="active" value="{{ 'false' if player.active else 'true' }}">
-                    <button class="h-9 rounded border border-slate-300 px-3 text-sm" type="submit">{{ "Desativar" if player.active else "Ativar" }}</button>
+                    <button class="h-9 rounded border border-[#febf97] px-3 text-sm transition hover:bg-[#fefac2]" type="submit">{{ "Desativar" if player.active else "Ativar" }}</button>
                   </form>
                 </div>
               </td>
