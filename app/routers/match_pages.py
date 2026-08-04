@@ -34,7 +34,7 @@ def matches_page(request: Request, db: Session = Depends(get_db)) -> HTMLRespons
 
 @router.post("", response_class=HTMLResponse)
 async def create_match_page(request: Request, db: Session = Depends(get_db)) -> HTMLResponse:
-    form = await _urlencoded_form(request)
+    form = _last_form_values(await _urlencoded_form(request))
     try:
         scheduled_at = datetime.fromisoformat(form.get("scheduled_at", ""))
         match = create_match(db, scheduled_at=scheduled_at, notes=form.get("notes") or None)
@@ -50,7 +50,7 @@ def match_detail_page(match_id: int, request: Request, db: Session = Depends(get
 
 @router.post("/{match_id}/presencas", response_class=HTMLResponse)
 async def attendance_page(match_id: int, request: Request, db: Session = Depends(get_db)) -> HTMLResponse:
-    form = await _urlencoded_form(request)
+    form = _last_form_values(await _urlencoded_form(request))
     try:
         set_attendance(
             db,
@@ -66,20 +66,25 @@ async def attendance_page(match_id: int, request: Request, db: Session = Depends
 
 @router.post("/{match_id}/sortear", response_class=HTMLResponse)
 async def draw_match_page(match_id: int, request: Request, db: Session = Depends(get_db)) -> HTMLResponse:
-    form = await _urlencoded_form(request)
+    form_values = await _urlencoded_form(request)
+    form = _last_form_values(form_values)
     try:
+        force_together, force_apart = _advanced_groups(form_values)
         draw_match_teams(
             db,
             match_id=match_id,
             request=DrawRequest(
                 players_per_team=_form_int(form.get("players_per_team"), 6),
                 range=_form_int(form.get("range"), 2),
+                force_together=force_together,
+                force_apart=force_apart,
             ),
         )
     except MatchNotFoundError:
         return _render_index(request, db, error="Partida nao encontrada.", status_code=404)
-    except DrawPayloadError:
-        return _render_detail(match_id, request, db, error="Marque pelo menos um jogador presente.", status_code=200)
+    except DrawPayloadError as exc:
+        message = "Marque pelo menos um jogador presente." if str(exc) == "match has no present players" else str(exc)
+        return _render_detail(match_id, request, db, error=message, status_code=200)
     except DrawApiRejectedError as exc:
         return _render_detail(match_id, request, db, error=str(exc), status_code=200)
     except DrawApiError:
@@ -113,6 +118,10 @@ def _render_detail(
         match = get_match(db, match_id)
     except MatchNotFoundError:
         return _render_index(request, db, error="Partida nao encontrada.", status_code=404)
+    active_players = list_active_players(db)
+    present_ids = present_player_ids(match)
+    present_players = [player for player in active_players if player.id in present_ids]
+    suggested_players_per_team = min(6, len(present_ids)) if present_ids else 6
     latest_draw = latest_draw_for_match(db, match_id)
     return templates.TemplateResponse(
         request,
@@ -120,21 +129,26 @@ def _render_detail(
         {
             "app_name": "Volley Draw",
             "match": match,
-            "active_players": list_active_players(db),
-            "present_ids": present_player_ids(match),
+            "active_players": active_players,
+            "present_ids": present_ids,
+            "present_players": present_players,
             "latest_draw": latest_draw,
             "share_text": format_whatsapp_draw(match, latest_draw) if latest_draw else None,
-            "suggested_players_per_team": min(6, len(present_player_ids(match))) if present_player_ids(match) else 6,
+            "suggested_players_per_team": suggested_players_per_team,
+            "suggested_team_count": _team_count(len(present_ids), suggested_players_per_team),
             "error": error,
         },
         status_code=status_code,
     )
 
 
-async def _urlencoded_form(request: Request) -> dict[str, str]:
+async def _urlencoded_form(request: Request) -> dict[str, list[str]]:
     body = (await request.body()).decode("utf-8")
-    parsed = parse_qs(body, keep_blank_values=True)
-    return {key: values[-1] for key, values in parsed.items()}
+    return parse_qs(body, keep_blank_values=True)
+
+
+def _last_form_values(form: dict[str, list[str]]) -> dict[str, str]:
+    return {key: values[-1] for key, values in form.items()}
 
 def _form_int(value: str | None, default: int) -> int:
     if value is None or value == "":
@@ -143,6 +157,30 @@ def _form_int(value: str | None, default: int) -> int:
     if not parsed.is_integer():
         raise ValueError
     return int(parsed)
+
+
+def _advanced_groups(form: dict[str, list[str]]) -> tuple[list[list[str]], list[list[str]]]:
+    return (
+        _groups_from_fields(form, "force_together_"),
+        _groups_from_fields(form, "force_apart_"),
+    )
+
+
+def _groups_from_fields(form: dict[str, list[str]], prefix: str) -> list[list[str]]:
+    groups: list[list[str]] = []
+    for key in sorted(form):
+        if not key.startswith(prefix):
+            continue
+        group = [value.strip() for value in form[key] if value.strip()]
+        if len(group) >= 2:
+            groups.append(group)
+    return groups
+
+
+def _team_count(player_count: int, players_per_team: int) -> int:
+    if player_count <= 0:
+        return 1
+    return max(1, (player_count + players_per_team - 1) // players_per_team)
 
 
 

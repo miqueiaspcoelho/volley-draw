@@ -15,6 +15,7 @@
 - Etapa 11 - Testes: concluida em 2026-08-03.
 - Etapa 12 - Docker: concluida em 2026-08-03.
 - Etapa 13 - Preparacao para Deploy: concluida em 2026-08-03.
+- Etapa 14 - Criterios Avancados de Sorteio por Partida: concluida em 2026-08-04.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -159,6 +160,49 @@ Status: concluida em 2026-08-03.
 - Conclusao: checklist de deploy validado para Neon e Render Docker, sem executar deploy efetivo.
 - Dependencias: etapas 1 a 12.
 - Riscos: requisitos de hospedagem ainda nao definidos.
+
+## Etapa 14 - Criterios Avancados de Sorteio por Partida
+
+Status: concluida em 2026-08-04.
+
+- Objetivo: adicionar na aba de partidas uma forma simples e visualmente clara de preencher os criterios opcionais da API externa `force_together` e `force_apart`, considerando a quantidade de times configurada para a partida.
+- Comportamento esperado: para cada um dos N times possiveis, o organizador pode definir dois grupos independentes:
+  - grupo `force_together`: jogadores que devem ser mantidos juntos quando a API conseguir cumprir a restricao;
+  - grupo `force_apart`: jogadores que devem ser separados quando a API conseguir cumprir a restricao.
+- Regra principal: ambos os criterios sao opcionais. Se nenhum grupo for definido, o sorteio deve continuar funcionando com o payload atual, sem alterar o comportamento existente.
+- Proposta de interface: adicionar uma secao expansivel ou painel "Criterios avancados" dentro da tela da partida, abaixo da selecao de presentes e antes da acao de sortear. A secao deve iniciar recolhida ou visualmente secundaria para nao poluir o fluxo principal.
+- Organizacao visual sugerida:
+  - renderizar um bloco por time, de `Time 1` ate `Time N`, derivado da quantidade de times informada;
+  - dentro de cada bloco, exibir duas areas lado a lado em desktop e empilhadas no mobile: "Manter juntos" e "Separar";
+  - cada area deve permitir selecionar multiplos jogadores presentes na partida;
+  - usar nomes claros e textos curtos de ajuda para reforcar que os campos sao opcionais.
+- Forma eficiente de preenchimento: reutilizar a lista de jogadores presentes ja carregada na partida, evitando nova consulta ou novo fluxo de cadastro. Quando a lista de presentes mudar, os seletores dos criterios devem refletir apenas jogadores ainda presentes.
+- Validacoes de UI/backend a planejar antes da implementacao:
+  - nao permitir jogador inexistente ou ausente nos grupos;
+  - evitar duplicidade dentro do mesmo grupo;
+  - avaliar se o mesmo jogador pode aparecer em grupos conflitantes do mesmo time e, se nao puder, retornar erro claro;
+  - manter o envio sem esses campos quando todos os grupos estiverem vazios;
+  - garantir que a estrutura enviada esteja aderente ao contrato atual da API externa.
+- Arquivos provaveis a alterar:
+  - templates da tela/fragmentos de partidas;
+  - schemas ou formularios relacionados ao sorteio;
+  - servico que monta o payload para a API externa;
+  - testes do payload e validacoes de entrada;
+  - documentacao `spec.md`, `analysis.md`, `plan.md` e `context.compact.md`.
+- Testes necessarios:
+  - sorteio sem criterios avancados preserva payload atual;
+  - preenchimento de `force_together` para um ou mais times;
+  - preenchimento de `force_apart` para um ou mais times;
+  - combinacao dos dois criterios;
+  - grupos vazios nao quebram a chamada;
+  - jogador ausente ou duplicado gera erro esperado;
+  - quantidade de blocos acompanha a quantidade de times.
+- Validacoes:
+  - revisar contrato real da API antes de implementar os nomes e formato exato dos campos;
+  - executar testes automatizados relacionados a partidas, payload e integracao mockada;
+  - validar responsividade da tela em desktop e mobile.
+- Rollback: remover a secao de criterios avancados da interface e deixar o servico de payload ignorando `force_together` e `force_apart`, preservando o fluxo atual de sorteio.
+- Conclusao: tela de partida permite informar criterios avancados opcionais em blocos por time possivel; backend envia os grupos para a API externa e valida jogadores ausentes ou duplicados.
 
 
 

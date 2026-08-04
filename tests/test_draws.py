@@ -61,6 +61,24 @@ def seed_present_player(db: Session) -> int:
     return match.id
 
 
+def seed_present_players(db: Session, names: list[str]) -> int:
+    match = create_match(db, datetime(2026, 8, 3, 20, 0))
+    for name in names:
+        player = create_player(
+            db,
+            PlayerCreate(
+                name=name,
+                serving=Decimal("5.0"),
+                passing=Decimal("4.0"),
+                setting=Decimal("3.0"),
+                attacking=Decimal("5.0"),
+                blocking=Decimal("4.0"),
+            ),
+        )
+        set_attendance(db, match.id, player.id, True)
+    return match.id
+
+
 def test_draw_request_accepts_decimal_like_integer_strings() -> None:
     request = DrawRequest(players_per_team="2.0", range="2.0")
 
@@ -75,6 +93,46 @@ def test_build_draw_payload_uses_present_player_snapshots(db_session: Session) -
     assert payload.players_per_team == 6
     assert payload.players[0].name == "Miqueias"
     assert payload.players[0].serving == Decimal("5.0")
+
+
+def test_build_draw_payload_includes_advanced_groups(db_session: Session) -> None:
+    match_id = seed_present_players(db_session, ["Miqueias", "David", "Joao"])
+
+    payload = build_draw_payload(
+        db_session,
+        match_id,
+        DrawRequest(
+            players_per_team=2,
+            range=2,
+            force_together=[["Miqueias", "David"]],
+            force_apart=[["Miqueias", "Joao"]],
+        ),
+    )
+
+    assert payload.force_together == [["Miqueias", "David"]]
+    assert payload.force_apart == [["Miqueias", "Joao"]]
+
+
+def test_build_draw_payload_rejects_absent_player_in_advanced_group(db_session: Session) -> None:
+    match_id = seed_present_players(db_session, ["Miqueias", "David"])
+
+    with pytest.raises(DrawPayloadError):
+        build_draw_payload(
+            db_session,
+            match_id,
+            DrawRequest(force_together=[["Miqueias", "Ausente"]]),
+        )
+
+
+def test_build_draw_payload_rejects_duplicate_player_in_advanced_group(db_session: Session) -> None:
+    match_id = seed_present_players(db_session, ["Miqueias", "David"])
+
+    with pytest.raises(DrawPayloadError):
+        build_draw_payload(
+            db_session,
+            match_id,
+            DrawRequest(force_apart=[["Miqueias", "Miqueias"]]),
+        )
 
 
 def test_build_draw_payload_rejects_match_without_players(db_session: Session) -> None:
@@ -218,6 +276,47 @@ def test_match_page_accepts_decimal_like_integer_form_values(client: TestClient,
 
     assert response.status_code == 200
     assert latest_draw_for_match(db_session, match_id).request_params["players_per_team"] == 2
+
+
+def test_match_page_submits_advanced_groups(client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch) -> None:
+    match_id = seed_present_players(db_session, ["Miqueias", "David", "Joao", "Pedro"])
+    captured_payloads = []
+
+    def draw(self, payload):
+        captured_payloads.append(payload)
+        return {"success": True, "data": {"leftovers": [], "teams": []}}
+
+    monkeypatch.setattr("app.services.draws.DrawApiClient.draw_teams", draw)
+
+    response = client.post(
+        f"/partidas/{match_id}/sortear",
+        data={
+            "players_per_team": "2",
+            "range": "2",
+            "force_together_1": ["Miqueias", "David"],
+            "force_apart_2": ["Joao", "Pedro"],
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert captured_payloads[0].force_together == [["Miqueias", "David"]]
+    assert captured_payloads[0].force_apart == [["Joao", "Pedro"]]
+    assert latest_draw_for_match(db_session, match_id).request_payload["force_together"] == [["Miqueias", "David"]]
+
+
+def test_match_page_displays_advanced_criteria_blocks(client: TestClient, db_session: Session) -> None:
+    match_id = seed_present_players(
+        db_session,
+        ["Miqueias", "David", "Joao", "Pedro", "Ana", "Bia", "Caio"],
+    )
+
+    response = client.get(f"/partidas/{match_id}")
+
+    assert response.status_code == 200
+    assert "Criterios avancados" in response.text
+    assert 'name="force_together_1"' in response.text
+    assert 'name="force_apart_2"' in response.text
 
 def test_match_page_returns_502_when_draw_api_fails(client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch) -> None:
     match_id = seed_present_player(db_session)

@@ -82,3 +82,26 @@ A media geral pode ser calculada dinamicamente para evitar inconsistencia. Se ho
 ## Impacto da Ausencia de Identificador
 
 Sem `player_id` ou `reference`, o resultado da API so pode ser reconciliado por nome. Isso exige nomes unicos no contexto do sorteio e torna alteracoes de nome mais sensiveis para historico. A aplicacao deve preservar snapshots do payload e da resposta para manter rastreabilidade.
+
+## Etapa 14 - Criterios Avancados de Sorteio
+
+Arquivos envolvidos:
+
+- `app/templates/matches/detail.html`: formulario de sorteio na tela da partida.
+- `app/routers/match_pages.py`: leitura do formulario HTML e conversao dos grupos selecionados.
+- `app/services/draws.py`: montagem e validacao central do payload enviado para a API externa.
+- `tests/test_draws.py`: cobertura de payload, validacoes e tela.
+
+Fluxo definido:
+
+- A tela da partida exibe uma secao opcional de criterios avancados no formulario de sorteio.
+- A quantidade de blocos visuais de times e calculada a partir dos presentes e da sugestao atual de jogadores por time.
+- Cada bloco oferece dois multiselects: `force_together` e `force_apart`.
+- O formulario envia nomes de jogadores presentes para preservar o contrato da API externa.
+- O servico valida que os nomes pertencem aos presentes e que nao ha duplicidade dentro do mesmo grupo.
+
+Impacto tecnico:
+
+- Nao houve alteracao estrutural de banco.
+- O contrato externo permanece o mesmo: `force_together` e `force_apart` continuam como arrays de arrays de nomes.
+- Chamadas sem criterios avancados continuam usando listas vazias.

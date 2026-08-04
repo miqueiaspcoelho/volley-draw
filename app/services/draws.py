@@ -23,6 +23,7 @@ def build_draw_payload(db: Session, match_id: int, request: DrawRequest) -> Draw
         )
     }
     players = [_attendance_payload(attendance, players_by_id) for attendance in match.attendances]
+    _validate_advanced_groups(request, {player.name for player in players})
     return DrawPayload(players=players, **request.model_dump())
 
 
@@ -67,3 +68,16 @@ def _attendance_payload(attendance: Attendance, players_by_id: dict[int, Player]
         attacking=attendance.attacking_snapshot,
         blocking=attendance.blocking_snapshot,
     )
+
+
+def _validate_advanced_groups(request: DrawRequest, present_names: set[str]) -> None:
+    for field_name, groups in (
+        ("force_together", request.force_together),
+        ("force_apart", request.force_apart),
+    ):
+        for group in groups:
+            if len(group) != len(set(group)):
+                raise DrawPayloadError(f"{field_name} has duplicated players")
+            missing = [name for name in group if name not in present_names]
+            if missing:
+                raise DrawPayloadError(f"{field_name} has players that are not present")

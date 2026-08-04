@@ -40,6 +40,7 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - RF10: Armazenar o resultado do sorteio vinculado a partida.
 - RF11: Gerar texto simples para compartilhamento no WhatsApp.
 - RF12: Permitir consultar historico de partidas e sorteios.
+- RF13: Permitir informar criterios opcionais `force_together` e `force_apart` na tela da partida antes do sorteio.
 
 ## Requisitos Nao Funcionais
 
@@ -61,6 +62,8 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - Historico de partidas e sorteios deve preservar dados suficientes para auditoria do resultado exibido.
 - No MVP, a integracao com a API externa pode usar nomes unicos como identificador operacional.
 - Nomes duplicados representam risco e devem ser prevenidos ou tratados antes do sorteio.
+- Os criterios `force_together` e `force_apart` sao opcionais; quando nao preenchidos, o sorteio deve manter o comportamento padrao.
+- Os criterios avancados devem usar apenas jogadores presentes na partida e nao devem aceitar nomes duplicados dentro do mesmo grupo.
 
 ## Criterios de Aceite
 
@@ -70,6 +73,7 @@ Criar uma aplicacao web responsiva, simples e pratica para cadastrar jogadores, 
 - O resultado retornado e exibido e persistido.
 - O historico permite consultar partidas e sorteios anteriores.
 - O texto para WhatsApp pode ser copiado e compartilhado manualmente.
+- O organizador consegue selecionar grupos opcionais de jogadores para manter juntos ou separar, por blocos visuais de times possiveis.
 - Nenhuma funcionalidade fora do MVP e implementada sem nova autorizacao.
 
 ## Fora do Escopo

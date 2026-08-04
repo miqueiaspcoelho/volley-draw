@@ -47,11 +47,20 @@ No MVP, consumir a API sem alterar seu contrato. Risco principal: API trabalha c
 
 ## Etapa Atual
 
-Etapa 13 de Preparacao para Deploy concluida com Neon, Alembic priorizando DATABASE_DIRECT_URL, Dockerfile preparado para Render, health check com banco e documentacao de deploy.
+Etapa 14 de Criterios Avancados de Sorteio por Partida concluida em 2026-08-04.
+
+Implementado:
+
+- Secao opcional "Criterios avancados" na tela de detalhe da partida.
+- Blocos visuais por time possivel, calculados a partir dos presentes e da sugestao de jogadores por time.
+- Multiselects para `force_together` e `force_apart`.
+- Conversao do formulario HTML para arrays de arrays de nomes aceitos pela API externa.
+- Validacao central no servico de sorteio para rejeitar jogador ausente e duplicidade dentro do mesmo grupo.
+- Testes de payload, validacao e renderizacao/envio pela tela.
 
 ## Proximo Passo
 
-Configurar segredos no painel do Render e acionar deploy manualmente quando aprovado. Deploy efetivo nao foi executado.
+Se aprovado, validar manualmente no navegador o preenchimento mobile/desktop dos criterios avancados. Deploy efetivo nao foi executado.
 
 
 

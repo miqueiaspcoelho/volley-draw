@@ -16,16 +16,61 @@
 
     <section class="rounded border border-slate-200 bg-white p-4 shadow-sm">
       <h2 class="mb-3 text-base font-semibold">Sorteio</h2>
-      <form class="grid gap-3 sm:grid-cols-[120px_120px_auto]" method="post" action="/partidas/{{ match.id }}/sortear" hx-post="/partidas/{{ match.id }}/sortear" hx-target="body">
-        <label class="grid gap-1 text-sm font-medium">
-          Por time
-          <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="players_per_team" type="number" min="1" value="{{ suggested_players_per_team }}" required>
-        </label>
-        <label class="grid gap-1 text-sm font-medium">
-          Range
-          <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="range" type="number" min="0" value="2" required>
-        </label>
-        <button class="h-10 self-end rounded bg-slate-900 px-4 text-sm font-medium text-white" type="submit">Sortear</button>
+      <form class="space-y-4" method="post" action="/partidas/{{ match.id }}/sortear" hx-post="/partidas/{{ match.id }}/sortear" hx-target="body">
+        <div class="grid gap-3 sm:grid-cols-[120px_120px_auto]">
+          <label class="grid gap-1 text-sm font-medium">
+            Por time
+            <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="players_per_team" type="number" min="1" value="{{ suggested_players_per_team }}" required>
+          </label>
+          <label class="grid gap-1 text-sm font-medium">
+            Range
+            <input class="h-10 rounded border border-slate-300 px-3 font-normal" name="range" type="number" min="0" value="2" required>
+          </label>
+          <button class="h-10 self-end rounded bg-slate-900 px-4 text-sm font-medium text-white" type="submit">Sortear</button>
+        </div>
+
+        <details class="rounded border border-slate-200 bg-slate-50">
+          <summary class="cursor-pointer px-3 py-2 text-sm font-semibold">
+            Criterios avancados
+            <span class="font-normal text-slate-600">(opcional)</span>
+          </summary>
+          <div class="space-y-3 border-t border-slate-200 p-3">
+            <p class="text-sm text-slate-600">
+              Defina jogadores para manter juntos ou separar. Campos vazios serao ignorados.
+            </p>
+            {% if present_players %}
+              <div class="grid gap-3">
+                {% for team_number in range(1, suggested_team_count + 1) %}
+                  <div class="rounded border border-slate-200 bg-white p-3">
+                    <div class="mb-3 text-sm font-semibold">Time {{ team_number }}</div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                      <label class="grid gap-1 text-sm font-medium">
+                        Manter juntos
+                        <select class="min-h-24 rounded border border-slate-300 px-2 py-2 font-normal" name="force_together_{{ team_number }}" multiple>
+                          {% for player in present_players %}
+                            <option value="{{ player.name }}">{{ player.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <span class="text-xs font-normal text-slate-500">Selecione 2 ou mais jogadores.</span>
+                      </label>
+                      <label class="grid gap-1 text-sm font-medium">
+                        Separar
+                        <select class="min-h-24 rounded border border-slate-300 px-2 py-2 font-normal" name="force_apart_{{ team_number }}" multiple>
+                          {% for player in present_players %}
+                            <option value="{{ player.name }}">{{ player.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <span class="text-xs font-normal text-slate-500">Selecione 2 ou mais jogadores.</span>
+                      </label>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-sm text-slate-600">Marque jogadores presentes para liberar estes criterios.</p>
+            {% endif %}
+          </div>
+        </details>
       </form>
     </section>
 
