@@ -1,11 +1,14 @@
 <section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
-  <div class="border-b border-[#d2fdfe] bg-[#fefac2]/60 px-4 py-3">
-    <h2 class="text-base font-semibold">Lista</h2>
+  <div class="flex items-center justify-between gap-3 border-b border-[#d2fdfe] bg-[#d2fdfe]/35 px-4 py-3">
+    <div>
+      <h2 class="text-base font-semibold text-slate-900">Lista</h2>
+      <p class="text-xs text-slate-600">Status, media e fundamentos cadastrados.</p>
+    </div>
   </div>
   {% if players %}
     <div class="overflow-x-auto">
       <table class="w-full min-w-[760px] text-left text-sm">
-        <thead class="bg-[#d2fdfe]/60 text-xs uppercase text-slate-700">
+        <thead class="bg-[#fefac2]/55 text-xs uppercase text-slate-700">
           <tr>
             <th class="px-3 py-2">Nome</th>
             <th class="px-3 py-2">Notas</th>
@@ -16,22 +19,32 @@
         </thead>
         <tbody class="divide-y divide-slate-100">
           {% for player in players %}
-            <tr class="{% if not player.active %}bg-slate-50 text-slate-500{% endif %}">
+            <tr class="transition hover:bg-[#d2fdfe]/25 {% if not player.active %}bg-slate-50 text-slate-500{% endif %}">
               <td class="px-3 py-3">
-                <div class="font-medium">{{ player.name }}</div>
+                <div class="font-semibold text-slate-900 {% if not player.active %}text-slate-500{% endif %}">{{ player.name }}</div>
                 {% if player.nickname %}<div class="text-xs text-slate-500">{{ player.nickname }}</div>{% endif %}
               </td>
               <td class="px-3 py-3 text-xs">
-                S {{ player.serving }} | R {{ player.passing }} | L {{ player.setting }} | A {{ player.attacking }} | B {{ player.blocking }}
+                <div class="flex flex-wrap gap-1.5">
+                  {% for label, value in [("S", player.serving), ("R", player.passing), ("L", player.setting), ("A", player.attacking), ("B", player.blocking)] %}
+                    <span class="rounded border border-[#d2fdfe] bg-white px-2 py-1 font-medium text-slate-700">{{ label }} {{ value }}</span>
+                  {% endfor %}
+                </div>
               </td>
-              <td class="px-3 py-3 font-semibold">{{ "%.1f"|format(player.overall) }}</td>
-              <td class="px-3 py-3">{{ "Ativo" if player.active else "Inativo" }}</td>
+              <td class="px-3 py-3">
+                <span class="inline-flex min-w-12 justify-center rounded bg-[#fe6960] px-2.5 py-1 text-sm font-semibold text-white">{{ "%.1f"|format(player.overall) }}</span>
+              </td>
+              <td class="px-3 py-3">
+                <span class="inline-flex rounded border px-2.5 py-1 text-xs font-semibold {% if player.active %}border-green-200 bg-green-50 text-green-700{% else %}border-slate-200 bg-slate-100 text-slate-600{% endif %}">
+                  {{ "Ativo" if player.active else "Inativo" }}
+                </span>
+              </td>
               <td class="px-3 py-3">
                 <div class="flex justify-end gap-2">
-                  <a class="inline-flex h-9 items-center rounded border border-[#febf97] bg-[#fefac2] px-3 text-sm transition hover:bg-[#febf97]" href="/jogadores/{{ player.id }}/editar" hx-get="/jogadores/{{ player.id }}/editar" hx-target="body">Editar</a>
+                  <a class="inline-flex h-9 items-center rounded border border-[#febf97] bg-[#fefac2] px-3 text-sm font-semibold text-slate-800 transition hover:bg-[#febf97]" href="/jogadores/{{ player.id }}/editar" hx-get="/jogadores/{{ player.id }}/editar" hx-target="body">Editar</a>
                   <form method="post" action="/jogadores/{{ player.id }}/ativo" hx-post="/jogadores/{{ player.id }}/ativo" hx-target="body">
                     <input type="hidden" name="active" value="{{ 'false' if player.active else 'true' }}">
-                    <button class="h-9 rounded border border-[#febf97] px-3 text-sm transition hover:bg-[#fefac2]" type="submit">{{ "Desativar" if player.active else "Ativar" }}</button>
+                    <button class="h-9 rounded border border-[#febf97] bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-[#fefac2]" type="submit">{{ "Desativar" if player.active else "Ativar" }}</button>
                   </form>
                 </div>
               </td>

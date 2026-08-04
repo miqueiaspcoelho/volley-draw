@@ -18,6 +18,7 @@
 - Etapa 14 - Criterios Avancados de Sorteio por Partida: concluida em 2026-08-04.
 - Etapa 15 - Melhorias Visuais: Navegacao Lateral Responsiva: concluida em 2026-08-04.
 - Etapa 16 - Melhorias Visuais da Tela de Partida: concluida em 2026-08-04.
+- Etapa 17 - Melhorias Visuais da Tela de Jogadores: concluida em 2026-08-04.
 
 
 ## Etapa 1 - Preparacao do Projeto
@@ -237,6 +238,17 @@ Status: concluida em 2026-08-04.
 - Fora do escopo: backend, banco, API externa, regras de sorteio, nomes de campos, rotas e novas dependencias.
 - Testes: executar suite automatizada existente.
 - Conclusao: tela de detalhe da partida recebeu ajustes visuais em hierarquia, secoes, campos, botoes, criterios avancados, resultado e lista de presentes, sem alterar comportamento funcional.
+
+## Etapa 17 - Melhorias Visuais da Tela de Jogadores
+
+Status: concluida em 2026-08-04.
+
+- Objetivo: modernizar visualmente cadastro, importacao e lista de jogadores.
+- Arquivos a alterar: `app/templates/players/index.html`, `app/templates/players/_form.html`, `app/templates/players/_list.html` e documentacao spec-driven.
+- Escopo: hierarquia, espacamento, cards, badges de media/status, botoes e estados visuais.
+- Fora do escopo: backend, banco, regras de cadastro, validacoes, rotas, nomes de campos e novas dependencias.
+- Testes: executar testes de paginas de jogadores e suite automatizada existente.
+- Conclusao: tela de jogadores recebeu cabecalho com contador, importacao CSV refinada, formulario em card, badges de notas/media/status e acoes mais claras, sem alterar comportamento funcional.
 
 
 

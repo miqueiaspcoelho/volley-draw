@@ -1,38 +1,41 @@
 {% set current = editing %}
 {% set action = "/jogadores" if not current else "/jogadores/" ~ current.id %}
-<section class="rounded border border-[#affbff] bg-white p-4 shadow-sm">
-  <h2 class="mb-3 text-base font-semibold">{{ "Editar jogador" if current else "Novo jogador" }}</h2>
-  <form class="grid gap-3" method="post" action="{{ action }}" hx-post="{{ action }}" hx-target="body">
+<section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
+  <div class="border-b border-[#d2fdfe] bg-[#fefac2]/55 px-4 py-3">
+    <h2 class="text-base font-semibold text-slate-900">{{ "Editar jogador" if current else "Novo jogador" }}</h2>
+    <p class="text-xs text-slate-600">Notas de 0 a 5 para compor a media geral.</p>
+  </div>
+  <form class="grid gap-4 p-4" method="post" action="{{ action }}" hx-post="{{ action }}" hx-target="body">
     <div class="grid gap-3 sm:grid-cols-2">
-      <label class="grid gap-1 text-sm font-medium">
+      <label class="grid gap-1 text-sm font-medium text-slate-800">
         Nome
-        <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="name" required maxlength="120" value="{{ values.get('name', current.name if current else '') }}">
+        <input class="h-10 rounded border border-[#febf97] bg-white px-3 font-normal text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="name" required maxlength="120" value="{{ values.get('name', current.name if current else '') }}">
       </label>
-      <label class="grid gap-1 text-sm font-medium">
+      <label class="grid gap-1 text-sm font-medium text-slate-800">
         Apelido
-        <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="nickname" maxlength="120" value="{{ values.get('nickname', current.nickname if current and current.nickname else '') }}">
+        <input class="h-10 rounded border border-[#febf97] bg-white px-3 font-normal text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="nickname" maxlength="120" value="{{ values.get('nickname', current.nickname if current and current.nickname else '') }}">
       </label>
     </div>
 
     <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
       {% for field, label in [("serving", "Saque"), ("passing", "Recepcao"), ("setting", "Levantamento"), ("attacking", "Ataque"), ("blocking", "Bloqueio")] %}
-        <label class="grid gap-1 text-sm font-medium">
+        <label class="grid gap-1 text-sm font-medium text-slate-800">
           {{ label }}
-          <input class="h-10 rounded border border-[#febf97] px-3 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="{{ field }}" type="number" min="0" max="5" step="0.1" required value="{{ values.get(field, current|attr(field) if current else '') }}">
+          <input class="h-10 rounded border border-[#febf97] bg-white px-3 font-normal text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="{{ field }}" type="number" min="0" max="5" step="0.1" required value="{{ values.get(field, current|attr(field) if current else '') }}">
         </label>
       {% endfor %}
     </div>
 
-    <label class="inline-flex items-center gap-2 text-sm">
+    <label class="inline-flex w-fit items-center gap-2 rounded border border-[#d2fdfe] bg-[#d2fdfe]/35 px-3 py-2 text-sm font-medium text-slate-800">
       {% set is_active = values.get('active', current.active if current else true) %}
       <input class="h-4 w-4 accent-[#fe6960]" type="checkbox" name="active" value="true" {% if is_active %}checked{% endif %}>
       Ativo
     </label>
 
-    <div class="flex gap-2">
-      <button class="h-10 rounded bg-[#fe6960] px-4 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="submit">Salvar</button>
+    <div class="flex flex-wrap gap-2">
+      <button class="h-10 rounded bg-[#fe6960] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56]" type="submit">Salvar</button>
       {% if current %}
-        <a class="inline-flex h-10 items-center rounded border border-[#febf97] bg-[#fefac2] px-4 text-sm font-medium transition hover:bg-[#febf97]" href="/jogadores">Cancelar</a>
+        <a class="inline-flex h-10 items-center rounded border border-[#febf97] bg-[#fefac2] px-4 text-sm font-semibold text-slate-800 transition hover:bg-[#febf97]" href="/jogadores">Cancelar</a>
       {% endif %}
     </div>
   </form>

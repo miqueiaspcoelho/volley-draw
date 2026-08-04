@@ -1,34 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <section class="space-y-4">
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <h1 class="text-2xl font-semibold">Jogadores</h1>
-        <p class="text-sm text-slate-600">Cadastro e notas para sorteio.</p>
+  <section class="space-y-5">
+    <div class="rounded border border-[#affbff] bg-white px-4 py-4 shadow-sm sm:px-5">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-[#fe6960]">Elenco</p>
+          <h1 class="text-2xl font-semibold text-slate-900">Jogadores</h1>
+          <p class="text-sm text-slate-600">Cadastro e notas para sorteio.</p>
+        </div>
+        <div class="inline-flex w-fit items-center gap-2 rounded border border-[#d2fdfe] bg-[#d2fdfe]/40 px-3 py-2 text-sm font-medium text-slate-700">
+          <span class="h-2 w-2 rounded-full bg-[#fe6960]"></span>
+          {{ players|length }} cadastrado(s)
+        </div>
       </div>
     </div>
 
     {% if error %}
-      <div class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{{ error }}</div>
+      <div class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800">{{ error }}</div>
     {% endif %}
     {% if success %}
-      <div class="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">{{ success }}</div>
+      <div class="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm font-medium text-green-800">{{ success }}</div>
     {% endif %}
 
-    <section class="rounded border border-[#affbff] bg-white p-4 shadow-sm">
-      <h2 class="mb-3 text-base font-semibold">Importar CSV</h2>
-      <form class="flex flex-col gap-3 sm:flex-row sm:items-end" method="post" action="/jogadores/importar-csv" enctype="multipart/form-data">
-        <label class="grid gap-1 text-sm font-medium sm:flex-1">
+    <section class="overflow-hidden rounded border border-[#affbff] bg-white shadow-sm">
+      <div class="border-b border-[#d2fdfe] bg-[#d2fdfe]/35 px-4 py-3">
+        <h2 class="text-base font-semibold text-slate-900">Importar CSV</h2>
+        <p class="text-xs text-slate-600">Adicione jogadores em lote mantendo o mesmo formato de notas.</p>
+      </div>
+      <form class="flex flex-col gap-3 p-4 sm:flex-row sm:items-end" method="post" action="/jogadores/importar-csv" enctype="multipart/form-data">
+        <label class="grid gap-1 text-sm font-medium text-slate-800 sm:flex-1">
           Arquivo CSV
-          <input class="h-10 rounded border border-[#febf97] px-3 py-2 font-normal focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="csv_file" type="file" accept=".csv,text/csv" required>
+          <input class="h-10 rounded border border-[#febf97] bg-white px-3 py-2 font-normal text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#fe6960]" name="csv_file" type="file" accept=".csv,text/csv" required>
         </label>
-        <button class="h-10 rounded bg-[#fe6960] px-4 text-sm font-medium text-white transition hover:bg-[#e85e56]" type="submit">Importar</button>
+        <button class="h-10 rounded bg-[#fe6960] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#e85e56]" type="submit">Importar</button>
       </form>
     </section>
 
-    {% include "players/_form.html" %}
-    {% include "players/_list.html" %}
+    <div class="grid gap-5 xl:grid-cols-[minmax(0,420px)_1fr]">
+      <div>
+        {% include "players/_form.html" %}
+      </div>
+      {% include "players/_list.html" %}
+    </div>
   </section>
 {% endblock %}
 

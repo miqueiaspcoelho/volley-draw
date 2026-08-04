@@ -161,3 +161,17 @@ Riscos:
 
 - Quebrar seletores esperados nos testes.
 - Alterar acidentalmente `name`, `action`, `hx-post` ou estrutura enviada pelo formulario.
+
+## Etapa 17 - Melhorias Visuais da Tela de Jogadores
+
+Arquivos envolvidos:
+
+- `app/templates/players/index.html`: cabecalho e importacao CSV.
+- `app/templates/players/_form.html`: formulario de cadastro/edicao.
+- `app/templates/players/_list.html`: listagem, status, media e acoes.
+- `tests/test_player_pages.py`: cobertura de renderizacao e fluxo HTML existente.
+
+Escopo:
+
+- Alteracao puramente visual em hierarquia, espacamento, cards, badges, botoes e estados.
+- Sem alteracao de rotas, actions, nomes de campos, validacoes, banco ou regras de negocio.
