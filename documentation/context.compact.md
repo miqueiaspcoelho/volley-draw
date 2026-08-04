@@ -58,7 +58,7 @@ Implementado:
 - Implementado: cabecalho de partida com badges, card de sorteio refinado, criterios em chips selecionaveis, resultado mais escaneavel, WhatsApp e lista de presentes com estados visuais melhores.
 - Etapa 17 foi puramente visual em templates de jogadores, sem alterar rotas, actions, names, validacoes, banco ou regras.
 - Implementado: cabecalho com contador, importacao CSV refinada, formulario em card, badges de notas/media/status e acoes mais claras.
-- Implementado filtro local na lista de presencas da tela de partida, sem mudar rota/formularios de presenca.
+- Implementado filtro local por nome na lista de presencas da tela de partida, case insensitive e sem mudar rota/formularios de presenca.
 - Testes passaram: focados `tests/test_draws.py tests/test_matches.py` e suite completa.
 
 ## Proximo Passo

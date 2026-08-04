@@ -330,6 +330,7 @@ def test_match_page_displays_attendance_filter(client: TestClient, db_session: S
     assert 'id="attendance-filter"' in response.text
     assert "Buscar jogador" in response.text
     assert "data-attendance-player" in response.text
+    assert 'data-filter-text="miqueias"' in response.text
     assert "Nenhum jogador encontrado." in response.text
 
 

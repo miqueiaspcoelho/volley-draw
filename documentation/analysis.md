@@ -186,7 +186,7 @@ Arquivos envolvidos:
 Fluxo:
 
 - O organizador digita no campo de busca da secao Presentes.
-- A lista renderizada de jogadores ativos e filtrada no navegador por texto.
+- A lista renderizada de jogadores ativos e filtrada no navegador pelo nome do jogador, de forma case insensitive.
 - Os formularios de presenca continuam enviando `player_id` e `present` para a mesma rota.
 
 Impacto tecnico:
